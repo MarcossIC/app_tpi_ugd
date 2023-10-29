@@ -1,0 +1,12 @@
+# ninja log v5
+4	805	7202441617831708	build.ninja	8efb43f7b7a48411
+14	1980	7202433832437923	CMakeFiles/app_tpi_ugd.dir/src/main.c.obj	2506848576c50e62
+1980	3733	7202433850361286	app_tpi_ugd.exe	d08a92a9631f50a0
+8	5015	7202154665242800	CMakeFiles/app_tpi_ugd.dir/src/fileutils.c.obj	798cbfc711a46111
+63	1808	7202358633115945	CMakeFiles/app_tpi_ugd.dir/src/validateData.c.obj	8e108be90d21cc80
+39	1939	7202433832417924	CMakeFiles/app_tpi_ugd.dir/src/accounts.c.obj	5798644a9e13f4e5
+51	1892	7202449240838208	CMakeFiles/app_tpi_ugd.dir/src/validateData.c.obj	8e108be90d21cc80
+35	1906	7202449240848208	CMakeFiles/app_tpi_ugd.dir/src/test.c.obj	bc84a4f96595066d
+14	1920	7202449241258496	CMakeFiles/app_tpi_ugd.dir/src/accounts.c.obj	5798644a9e13f4e5
+14	766	7202450276021050	CMakeFiles/app_tpi_ugd.dir/src/main.c.obj	2506848576c50e62
+35	1239	7202450626682665	CMakeFiles/app_tpi_ugd.dir/src/main.c.obj	2506848576c50e62

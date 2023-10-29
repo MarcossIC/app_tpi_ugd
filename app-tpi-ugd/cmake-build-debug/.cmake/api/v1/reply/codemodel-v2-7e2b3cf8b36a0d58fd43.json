@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.26"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "app_tpi_ugd",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "app_tpi_ugd::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-app_tpi_ugd-Debug-dca5a61d9ac4bc7a5b71.json",
+					"name" : "app_tpi_ugd",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/usuario/Desktop/Marcos/Programacion/Mis Proyectos/app-tpi-ugd/cmake-build-debug",
+		"source" : "C:/Users/usuario/Desktop/Marcos/Programacion/Mis Proyectos/app-tpi-ugd"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 5
+	}
+}
