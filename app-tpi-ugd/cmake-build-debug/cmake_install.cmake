@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/usuario/Desktop/Marcos/Programacion/Mis Proyectos/app-tpi-ugd
+# Install script for directory: C:/Users/usuario/Desktop/Marcos/Programacion/TPI/app_tpi_ugd/app-tpi-ugd
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/usuario/Desktop/Marcos/Programacion/Mis Proyectos/app-tpi-ugd/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/usuario/Desktop/Marcos/Programacion/TPI/app_tpi_ugd/app-tpi-ugd/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

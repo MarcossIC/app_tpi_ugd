@@ -1,8 +1,70 @@
-//
-// Created by usuario on 28/10/2023.
-//
 
 #include "validateData.h"
+
+bool stringEquals(char* firstString, char* secondString){
+    bool stringEquals = false;
+    if (strcmp(firstString, secondString) == 0) {
+        stringEquals = true;
+    }
+    return stringEquals;
+}
+bool stringSizeLessThan(char* string, char* stringName, int number){
+    bool stringSizeLessThree = true;
+    if (strlen(string) <= number) {
+        stringSizeLessThree =  false;
+        printf("Error, El %s no puede ser menor a %d caracteres.\n", stringName, number);
+    }
+    return stringSizeLessThree;
+}
+
+bool stringSizeIsBetween(char* string, char* stringName, int firstNumber, int secondNumber){
+    bool stringSizeIsBetween = true;
+    int lenght = strlen(string);
+    if(lenght < firstNumber || lenght > secondNumber){
+        printf("Error, El tamaño de %s no es valido, debe de estar entre %d y %d", stringName, firstNumber, secondNumber);
+        stringSizeIsBetween = false;
+    }
+    return stringSizeIsBetween;
+}
+
+bool stringSizeGreaterThan(char* string, char* stringName, int number){
+    bool stringSizeGreaterThan = true;
+    if (strlen(string) >= number) {
+        stringSizeGreaterThan =  false;
+        printf("Error, El %s no puede ser mayor a %d caracteres.\n", stringName, number);
+    }
+    return stringSizeGreaterThan;
+}
+
+bool stringNotContainNumber(char* string, char* stringName){
+    bool stringNotContainNumber = true;
+    if (strcspn(string, "0123456789") < strlen(string)) {
+        stringNotContainNumber =  false;
+        printf("Error, El %s no puede contener numeros.\n", stringName);
+    }
+    return stringNotContainNumber;
+}
+
+bool isStringOnlyHasNumber(char *string, char* stringName){
+    bool isStringOnlyHasNumber = true;
+    int lenght = strlen(string);
+    for (int i = 0; i < lenght; i++) {
+        if (string[i] < '0' || string[i] > '9') {
+            printf("Error, El %s solo puede tener numeros.\n", stringName);
+            isStringOnlyHasNumber = false;
+        }
+    }
+    return isStringOnlyHasNumber;
+}
+
+bool stringSizeIsEqualsTo(char *string, char* stringName, int size){
+    bool stringSizeIsEqualsTo = true;
+    if (!(strlen(string) == size)) {
+        stringSizeIsEqualsTo = false;
+        printf("Error, el tamaño del %s no puede ser distinto de %d",stringName, size);
+    }
+    return stringSizeIsEqualsTo;
+}
 
 bool isNameOrLastNameValid(char *nameOrLastname, char* type) {
     bool isNameOrLastNameValid = true;
@@ -18,52 +80,36 @@ bool isNameOrLastNameValid(char *nameOrLastname, char* type) {
     return isNameOrLastNameValid;
 }
 
-bool isBirthDateValid(int day, int month, int year) {
-    bool isBirthDateValid = true;
+bool isGreaterThan(int birthdayYear, int olderAge){
+    bool isValidAge = true;
+    if (calcUserAge(birthdayYear) < olderAge) {
+        printf("Error, Debes de tener mas de %d años.\n", &olderAge);
+        isValidAge = false;
+    }
+    return isValidAge;
+}
+
+bool isValidDate(int day, int month, int year) {
+    bool isValidDate = true;
 
     if (year < 0) {
         printf("Error, Año no puede ser 0.\n");
-        isBirthDateValid = false;
+        isValidDate = false;
     }
-    if (isBirthDateValid && calcUserAge(year) < 6) {
-        printf("Error, Debes de tener mas de 6 años.\n");
-
-        isBirthDateValid = false;
-    }
-    if (isBirthDateValid && month < 1 || month > 12) {
+    if (isValidDate && month < 1 || month > 12) {
         printf("Error, Mes no puede ser menor a 1 o mayor 12\n");
-        isBirthDateValid = false;
+        isValidDate = false;
     }
     int daysInMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     if (isLeapYear(year)) {
         daysInMonth[1] = 29;
     }
-    if(isBirthDateValid && !(day > 0 && day <= daysInMonth[month-1])){
-        printf("Error, dia no valido.\n");
-        isBirthDateValid = false;
+    if(isValidDate && !(day > 0 && day <= daysInMonth[month-1])){
+        printf("Error, el mes %d no tiene un dia %d.\n", month, day);
+        isValidDate = false;
     }
 
-    return isBirthDateValid;
-}
-
-bool isDniValid(char *dni) {
-    bool isDniValid = true;
-    if (!(strlen(dni) < 12 && strlen(dni) >= 7)) {
-        isDniValid =  false;
-        printf("Error, El tamaño del dni no es valido.\n");
-    }
-
-    return isDniValid;
-}
-
-bool isAddressValid(char *address) {
-
-    return true;
-}
-
-bool isCellphoneValid(char *cellphone) {
-
-    return true;
+    return isValidDate;
 }
 
 int calcUserAge(int year){

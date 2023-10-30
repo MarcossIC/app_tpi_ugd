@@ -8,5 +8,4 @@ add_executable(app_tpi_ugd src/main.c
         src/accounts.h
         src/validateData.c
         src/validateData.h
-        src/test.c
 )
