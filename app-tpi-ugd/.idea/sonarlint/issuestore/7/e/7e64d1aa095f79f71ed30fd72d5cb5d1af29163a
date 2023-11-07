@@ -1,0 +1,8 @@
+
+dc:S5276F"Jimplicit conversion loses integer precision: 'unsigned long long' to 'int'(õ®ôñ8¸æÿ¿º1
+jc:S5276…"Jimplicit conversion loses integer precision: 'unsigned long long' to 'int'(†­¼¯ÿÿÿÿÿ8¹¼‚Àº1
+sc:S5276‚"Simplicit conversion loses integer precision: 'int' to 'WORD' (aka 'unsigned short')(°„¡¦ùÿÿÿÿ8ú„ƒÀº1
+/c:S1481’"unused variable 'os'(Þ¨Îà8ú„ƒÀº1
+rc:S1912Ö"WReplace this call to the non reentrant function "localtime" by a call to "localtime_r".(¶è ¬8‚†ƒÀº1
+Hc:S935“")non-void function does not return a value(æÀö€øÿÿÿÿ8‰†ƒÀº1
+Wc:S1854’"<Value stored to 'os' during its initialization is never read(Þ¨Îà8 ‡ƒÀº1

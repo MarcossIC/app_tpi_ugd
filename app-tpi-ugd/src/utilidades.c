@@ -1,5 +1,5 @@
 
-#include "validateData.h"
+#include "utilidades.h"
 
 /**
  * Comprueba si dos Strings son iguales
@@ -28,7 +28,9 @@ bool isStringLengthLessThan(const char* string, const char* stringName, int minS
     bool isStringLengthLessThan = true;
     if (strlen(string) >= minSize) {
         isStringLengthLessThan =  false;
+        setColorOutput(RED_COLOR);
         printf("Error, El %s no puede ser mayor a %d caracteres.\n", stringName, minSize);
+        resetColor();
     }
     return isStringLengthLessThan;
 }
@@ -46,7 +48,9 @@ bool isStringLengthGreaterThan(const char* string, const char* stringName, int m
     bool isStringLengthGreaterThan = true;
     if (strlen(string) <= maxSize) {
         isStringLengthGreaterThan =  false;
+        setColorOutput(RED_COLOR);
         printf("Error, El %s no puede ser menor a %d caracteres.\n", stringName, maxSize);
+        resetColor();
     }
     return isStringLengthGreaterThan;
 }
@@ -65,7 +69,9 @@ bool isStringLengthBetween(const char* string, const char* stringName, int minSi
     bool isStringLengthBetween = true;
     int lenght = strlen(string);
     if(lenght > minSize && lenght < maxSize){
+        setColorOutput(RED_COLOR);
         printf("Error, El tamanio de %s no es valido, debe de estar entre %d y %d\n", stringName, minSize, maxSize);
+        resetColor();
         isStringLengthBetween = false;
     }
     return isStringLengthBetween;
@@ -86,7 +92,9 @@ bool doesStringNotContainDigits(const char* string, const char* stringName){
     //En caso de tener false
     if (strcspn(string, "0123456789") < strlen(string)) {
         doesStringNotContainDigits =  false;//False, es que si contiene
+        setColorOutput(RED_COLOR);
         printf("Error, El %s no puede contener numeros.\n", stringName);
+        resetColor();
     }
     return doesStringNotContainDigits;
 }
@@ -103,7 +111,9 @@ bool isStringOnlyHasNumber(const char *string, const char* stringName){
     bool isStringOnlyHasNumber = true;
     int value = 0;
     if (sscanf(string, "%d", &value) != 1) {
+        setColorOutput(RED_COLOR);
         printf("Error, El %s solo puede tener numeros.\n", stringName);
+        resetColor();
         isStringOnlyHasNumber = false;
     }
     return isStringOnlyHasNumber;
@@ -122,7 +132,9 @@ bool isStringLengthEqualTo(const char *string, const char* stringName, int size)
     bool isStringLengthEqualTo = true;
     if ( !areIntegersEqual(strlen(string), size)) {
         isStringLengthEqualTo = false;
+        setColorOutput(RED_COLOR);
         printf("Error, el tamanioo del %s no puede ser distinto de %d\n",stringName, size);
+        resetColor();
     }
     return isStringLengthEqualTo;
 }
@@ -150,7 +162,9 @@ bool areIntegersEqual(int firstNumber, int secondNumber){
 bool isOlderThan(int birthdayYear, int olderAge){
     bool isValidAge = true;
     if (calcUserAge(birthdayYear) < olderAge) {
+        setColorOutput(RED_COLOR);
         printf("Error, Debes de tener mas de %d años.\n", &olderAge);
+        resetColor();
         isValidAge = false;
     }
     return isValidAge;
@@ -167,7 +181,7 @@ bool isOlderThan(int birthdayYear, int olderAge){
  */
 bool isValidDate(int day, int month, int year) {
     bool isValidDate = true;
-
+    setColorOutput(RED_COLOR);
     if (year < 0) {
         printf("Error, Año no puede ser 0.\n");
         isValidDate = false;
@@ -184,7 +198,7 @@ bool isValidDate(int day, int month, int year) {
         printf("Error, el mes %d no tiene un dia %d.\n", month, day);
         isValidDate = false;
     }
-
+    resetColor();
     return isValidDate;
 }
 
@@ -212,4 +226,50 @@ int calcUserAge(int year){
  */
 bool isLeapYear(int year) {
     return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0));
+}
+
+bool encontrarCoincidencia(int number, const int numbers[]) {
+    int i = 0;
+    bool esNumeroIgualA = false;
+    while (!esNumeroIgualA && numbers[i] != -99) {
+        if (number == numbers[i]) esNumeroIgualA = true;
+        i++;
+    }
+    return esNumeroIgualA;
+}
+
+/**
+ * Ejecuta un comando para limpiar la consola segun el sistema ope<rativo
+ */
+void clearConsole() {
+
+    if (isWindowsOS()) {
+        system("cls");
+    } else {
+        system("clear");
+    }
+}
+
+
+
+void setColorOutput(int foregroundColor){
+    if (isWindowsOS()) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(hConsole, foregroundColor);
+    } else {
+        printf("\033[%d;%dm", foregroundColor);
+    }
+}
+
+void resetColor() {
+    if (isWindowsOS()) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    } else {
+        printf("\033[0m");
+    }
+}
+
+bool isWindowsOS(){
+    const char* os = getenv("OS");
 }

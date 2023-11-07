@@ -1,10 +1,7 @@
 
-Vc:S5276ˆ"<implicit conversion from 'int' to 'float' may lose precision(Á£%8Žåœ¼º1
-\c:S5276‰"<implicit conversion from 'int' to 'float' may lose precision(ýÅ£²ûÿÿÿÿ8Ÿß¢¼º1
-†c:S5276Š"fimplicit conversion from 'unsigned long long' to 'long' changes value from 18446744073709551584 to -32(”â…«úÿÿÿÿ8 ß¢¼º1
-sc:S995*"ZMake the type of this parameter a pointer-to-const. The current type of "DNI" is "char *".(˜ƒ¸À8™÷ù»º1
-sc:S995T"ZMake the type of this parameter a pointer-to-const. The current type of "DNI" is "char *".(ÿÜäŽ8âû»º1
-lc:S134‰"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ýÅ£²ûÿÿÿÿ8Ú˜Ž¼º1
-jc:S876Š"KRemove the unary minus operator or change the expression's underlying type.(”â…«úÿÿÿÿ8÷¶¢¼º1
-Fc:S8368"-Undefined or garbage value returned to caller(ì”Å©8Ïçû»º1
-Mc:S20958"3Opened stream never closed. Potential resource leak(ì”Å©8€ú»º1
+fc:S134"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(âµÃ 8Í§ò¼º1
+uc:S108"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(âµÃ 8Î§ò¼º1
+Tc:S10797"5Add a field width specifier to this "%s" placeholder.(éì‚éýÿÿÿÿ8Ï§ò¼º1
+uc:S108<"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(âµÃ 8Ï§ò¼º1
+Oc:S1659U"0Define each identifier in a dedicated statement.(”š•ïûÿÿÿÿ8Ï§ò¼º1
+Lc:S3519;"-Out of bound memory access (index is tainted)(¾è¸”ùÿÿÿÿ8´‹ó¼º1

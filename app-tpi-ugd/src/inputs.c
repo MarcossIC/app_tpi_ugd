@@ -3,148 +3,126 @@
 //
 
 #include "inputs.h"
-#include "validateData.h"
-
-//
-
-//Cuenta.dat, CargarSaldo.dat
+#include "utilidades.h"
 
 /**
+ * Solicita un String por valido por teclado
  *
- * @author Thyago
- * @return
+ * @param inputName Nombre del input que se quiere solicitar.
+ * @param input Puntero del String donde se guardara el valor
  */
-int obtenerUltimoIdDeCuenta(){
-    //Se busca la ultima id
+void escribirStringValido(const char* inputName, char* input){
+    bool inputValid = true;
+    char buffer[100];
+    do {
+        printf("Ingresa su %s:", inputName);
+        //Ingresa el valor en buffer
+        if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+            size_t length = strlen(buffer);
+            //Limpia el buffer y la consola
+            if (length > 0 && buffer[length - 1] == '\n')buffer[length - 1] = '\0';
+            else while (fgetc(stdin) != '\n') {}
 
-    FILE *Users;
-    struct Cuenta Cuentas;
-    int lastId = 0; // Variable que va a tener la ultima id
-    if((Users=fopen("assets/Cuenta.dat","rb"))!=NULL){
-        fread (&Cuentas, sizeof(struct Cuenta),1,Users);
-        while (!feof(Users)){
-            fread (&Cuentas, sizeof(struct Cuenta),1,Users);
-            if (lastId<=Cuentas.id){
-                lastId=Cuentas.id;
+            strcpy(input, buffer);
+
+            //Valida
+            inputValid = isStringLengthLessThan(input, inputName, 50);
+            if(inputValid && areStringsEqual(inputName, "dni")){
+                inputValid = esValidoElDNI(input);
+            } else if(inputValid && (areStringsEqual(inputName, "nombre") ||  areStringsEqual(inputName, "apellido"))){
+                inputValid = esValidoElNombre(input, inputName);
+            } else if(inputValid && areStringsEqual(inputName, "telefono")){
+                inputValid = esValidoElTelefono(input);
             }
+
+            fflush(stdin);
         }
-        fclose(Users);
-    }
-    return lastId;
+    } while(!inputValid);
 }
 
 /**
+ * Solicita un Entero por teclado
  *
- * @author Matias
- * @param DNI
- * @return
+ * @param prompt Mensaje que se mouestra en consola al solicitar
+ * @return Retorna el entero que se escribio
  */
-int buscarIdCuenta(char* DNI) {
-    FILE *Cuenta;
-    int id;
-    struct Cuenta cuentas;
-    if ((Cuenta = fopen("assets/Cuenta.dat", "rb")) != NULL) {
-        rewind(Cuenta);
-        fread(&cuentas, sizeof(struct Cuenta), 1, Cuenta);
-        while (!feof(Cuenta)) {
-            if (strcmp(DNI, cuentas.DNI) == 0) {
-                id = cuentas.id;
-            } else fread(&cuentas, sizeof(struct Cuenta), 1, Cuenta);
+int escribirEnteroValido(const char* prompt) {
+    int value = 0;
+    bool inputValid = true;
+    char buffer[20];
+    do {
+        printf("%s", prompt);
+        scanf("%s", buffer);
 
+        size_t length = strlen(buffer);
+        //Elimina saltos de lineas del buffer
+        if (length > 0 && buffer[length - 1] == '\n') buffer[length - 1] = '\0';
+        else while (fgetc(stdin) != '\n') { }
+
+        //sscanf = Transforma el string a int, si el string es un numero valido
+        if (sscanf(buffer, "%d", &value) != 1) {
+            setColorOutput(RED_COLOR);
+            printf("Error, Debes ingresar un numero valido.\n");
+            resetColor();
+            inputValid = false;
         }
-    }
-    return id;
-}
-/**
- *
- * @author Matias
- * @param cuenta
- * @return
- */
-int guardarCuenta(struct Cuenta cuenta){
-    FILE *Cuenta;
-    int error=0;
-    if((Cuenta=fopen("assets/Cuenta.dat","a+b"))!=NULL){
-        fwrite(&cuenta,sizeof(struct Cuenta),1,Cuenta);
-        fclose(Cuenta);
-    } else{
-        printf("\n Error de apertura");
-        error = 1;
-    }
-    return error;
+
+        fflush(stdin);
+    } while (!inputValid);
+
+    return value;
 }
 
 /**
+ * Solicita una fecha por teclado valida
+ * La fecha es devuelta en formato "yyyy-mm-dd"
  *
- * @author Marcos
- * @param DNI
- * @param idCuenta
- * @return
+ * @param dateName Nombre del tipo de fecha que se solicita
+ * @param date Puntero a la variable donde se guardara la fecha
  */
-bool esUnaCuentaRegistrada(char* DNI, int idCuenta){
-    FILE* fileCuenta;
-    struct Cuenta cuenta;
-    bool esUnaCuentaRegistrada = false;
-    if( (fileCuenta = fopen("assets/Cuenta.dat", "r+b")) != NULL){
-        while(!esUnaCuentaRegistrada && fread(&cuenta, sizeof(struct Cuenta), 1, fileCuenta) == 1){
-            if(areIntegersEqual(cuenta.id, idCuenta) && areStringsEqual(cuenta.DNI, DNI))
-                esUnaCuentaRegistrada = true;
-        }
-        fclose(fileCuenta);
-    }
-    return esUnaCuentaRegistrada;
+void escribirFechaValida(const char* dateName, char* date){
+    bool isDateValid = true;
+    int day, month, year;
+    do {
+        printf("Ingresa su Fecha de %s \n", dateName);
+        day = escribirEnteroValido("Dia:");
+        month = escribirEnteroValido("Mes:");
+        year = escribirEnteroValido("Año:");
+
+        isDateValid = isValidDate(day, month, year);
+        if(isDateValid && areStringsEqual(dateName, "nacimiento")) isDateValid = isOlderThan(year, 6);
+        //Formato de la fecha
+        snprintf(date, 11, "%04d-%02d-%02d", year, month, day);
+        fflush(stdin);
+    } while(isDateValid == false);
 }
 
 /**
+ * Valida el formato del DNI
  *
- * @author Thyago
- * @param cargaSaldo
- * @return
+ * @param dni Puntero del string del DNI para validar
+ * @return booleano
  */
-int guardarCargaDeSaldo(struct CargaSaldo cargaSaldo){
-// DNI, Nro. Control, Monto, Boca de pago, Fecha y hora.
-    FILE   * Arch;
-    int error=0;
-    if((Arch=fopen("assests/CargaSaldo.dat","a+b"))!=NULL){
-        fwrite(&cargaSaldo,sizeof(struct CargaSaldo),1,Arch);
-    fclose (Arch);
-    }else{
-        printf("Error al abrir");
-        error=1;
-    }
-    return error;
-
-
+bool esValidoElDNI(const char* dni){
+    return isStringOnlyHasNumber(dni, "dni") && isStringLengthEqualTo(dni, "dni", 8);
 }
 
 /**
+ * Valida el formato del Telefono
  *
- * @author
- * @param idCuenta
- * @param saldoExtra
- * @return
+ * @param dni Puntero del string del telefono para validar
+ * @return booleano
  */
-int actualizarSaldoCuenta(int idCuenta, int saldoExtra){
-    struct Cuenta cuentas;
-    FILE *Arch;
-    int error=0;
-    int tope=1000;
-    bool bandera = false;
-    if((Arch=fopen("assests/Cuenta.dat","r+b"))!=NULL){
-        while(!bandera && fread(&cuentas, sizeof(struct Cuenta), 1, Arch) == 1){
-            if(cuentas.id==idCuenta){
-                cuentas.saldo+=saldoExtra;
-                if(cuentas.saldo <= tope){
-                    fseek(Arch, -sizeof(struct Cuenta), SEEK_CUR);
-                    fwrite(&cuentas,sizeof(struct Cuenta),1,Arch);
-                    bandera = true;
-                } else error = 2;
-            } else error = 2;
-        }
-        fclose(Arch);
-    }else{
-        printf ("erorr al abrir");
-        error=1;
-    }
-    return error;
+bool esValidoElTelefono(const char* cellphone){
+    return isStringOnlyHasNumber(cellphone, "telefono") && isStringLengthEqualTo(cellphone, "telefono", 10);
+}
+
+/**
+ * Valida el formato del nombre
+ *
+ * @param dni Puntero del string del nombre para validar
+ * @return booleano
+ */
+bool esValidoElNombre(const char* name, const char* nameType){
+    return doesStringNotContainDigits(name, nameType) && isStringLengthGreaterThan(name, nameType, 2);
 }

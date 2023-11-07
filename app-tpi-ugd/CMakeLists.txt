@@ -4,10 +4,14 @@ project(app_tpi_ugd C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(app_tpi_ugd src/main.c
-        src/accounts.c
-        src/accounts.h
-        src/validateData.c
-        src/validateData.h
+        src/user.c
+        src/user.h
+        src/utilidades.c
+        src/utilidades.h
         src/inputs.c
         src/inputs.h
+        src/cuenta.c
+        src/cuenta.h
+        src/cargarSaldo.c
+        src/cargarSaldo.h
 )

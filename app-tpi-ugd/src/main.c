@@ -1,93 +1,111 @@
 #include <stdio.h>
+#include "user.h"
+#include "utilidades.h"
 
-#include "accounts.h"
-#include <string.h>
+void clearConsole();
 
-void runApp();
-void screenEnd();
-int screenInit();
-int screenRegisterAccount();
-int screenViewAccounts();
+void ejecutarApp();
+int pantallaInicio();
+int pantallaRegistrarUsuario();
+int pantallaListarUsuarios();
+int pantallaEspera();
+void imprimirMensaje(const char* mensaje, int color);
 
 int main() {
-    runApp();
+    ejecutarApp();
     return 0;
 }
 
-void runApp(){
-    int screen = -1;
+void ejecutarApp(){
+    int pantalla = -1;
     do{
         fflush(stdout);
 
-        if(screen == -1) {
-            screen = screenInit();
-            system("cls");
-        } else if(screen == 1) {
-            screen = screenRegisterAccount();
-            system("cls");
-        } else if(screen == 2) {
-            screen = screenViewAccounts();
-            system("cls");
+        if(pantalla == -1) {
+            pantalla = pantallaInicio();
+            clearConsole();
+        } else if(pantalla == -2){
+            pantalla = pantallaEspera();
+            clearConsole();
+        }else if(pantalla == 1) {
+            pantalla = pantallaRegistrarUsuario();
+        } else if(pantalla == 2) {
+            pantalla = pantallaListarUsuarios();
         }
-    } while(screen != 0);
-    screenEnd();
+    } while(pantalla != 0);
+    imprimirMensaje("GRACIAS POR ENTRAR", DEFAULT_COLOR);
 }
 
-int screenInit(){
-    int updatePage = 0;
-    printf("****************************************************\n");
-    printf("***** SISTEMA ELECTRONICO PARA TRANSPORTE SUBE *****\n");
-    printf("************** Elija una opcion ********************\n");
-    printf("*  1 - Registrar Usuario                           *\n");
-    printf("*  2 - Consultar Saldo                             *\n");
-    printf("*  3 - Cargar Saldo                                *\n");
-    printf("*  4 - Usuar Tarjeta                               *\n");
-    printf("*  5 - User Billetera                              *\n");
-    printf("*  6 - Gestion de transporte                       *\n");
-    printf("*  0 - Salir                                       *\n");
-    printf("*:");
-    scanf("%d", &updatePage);
-    return updatePage;
+int pantallaInicio(){
+    int nuevaPantalla = 0;
+    bool opcionEsValida = true;
+    do{
+        printf("****************************************************\n");
+        printf("***** SISTEMA ELECTRONICO PARA TRANSPORTE SUBE *****\n");
+        printf("************** Elija una opcion ********************\n");
+        printf("*  1 - Registrar Usuario                           *\n");
+        printf("*  2 - Consultar Saldo                             *\n");
+        printf("*  3 - Cargar Saldo                                *\n");
+        printf("*  4 - Usuar Tarjeta                               *\n");
+        printf("*  5 - Usuario Billetera                           *\n");
+        printf("*  6 - Gestion de transporte                       *\n");
+        printf("*  0 - Salir                                       *\n");
+        printf("*:");
+        scanf("%d", &nuevaPantalla);
+        int opcionesValidas[] = {1, 2, 3, 4, 5, 6,0, -99};
+        opcionEsValida = encontrarCoincidencia(nuevaPantalla, opcionesValidas);
+        if(!opcionEsValida) imprimirMensaje("LO SIENTO, PANTALLA NO ENCONTRADA", RED_COLOR);
+    } while(!opcionEsValida);
+    return nuevaPantalla;
 }
 
-int screenViewAccounts(){
-    printf("****************************************************\n");
-    printf("*************** LISTA DE CUENTAS *****************\n");
-    printf("****************************************************\n");
+int pantallaListarUsuarios(){
+    printf("*******************************************************************************\n");
+    printf("***************                 LISTA DE CUENTAS                     **********\n");
+    printf("*******************************************************************************\n");
 
-    int counting = listAllRegisteredAccounts();
-    printf("****************************************************\n");
-    printf("*                 GRACIAS POR VER                  *\n");
-    printf("             Hay %d cuentas registradas            \n", counting);
-    printf("****************************************************\n");
-    return -1;
+    int conteo = listarTodosLosUsuariosRegistrados();
+    printf("*******************************************************************************\n");
+    printf("                              GRACIAS POR VER                           \n");
+    printf("                         Hay %d cuentas registradas                   \n", conteo);
+    printf("*******************************************************************************\n");
+    return -2;
 }
 
-int screenRegisterAccount(){
+int pantallaRegistrarUsuario(){
     printf("****************************************************\n");
     printf("*************** REGISTRO DE CUENTA *****************\n");
     printf("****************************************************\n");
-    struct Account account = getAccountValidInput();
+    struct Usuario cuenta = crearNuevoUsuarioValido();
     printf("****************************************************\n");
 
-    int error = saveAccount(account);
-    printf("****************************************************\n");
-    if(error == 1) printf("* Error al crear el usuario.                       *\n");
-    if(error == 0) printf("* Te has registrado con exito.                     *\n");
-    printf("****************************************************\n");
-    return -1;
+    int error = guardarUsuario(cuenta);
+    clearConsole();
+    if(error == 1) imprimirMensaje("Error al crear el usuario. ", RED_COLOR);
+    if(error == 0) imprimirMensaje("Usuario creado con exito. ", GREEN_COLOR);
+    return -2;
 }
 
-void screenEnd(){
-    printf("****************************************************\n");
-    printf("*************    GRACIAS POR ENTRAR    *************\n");
-    printf("****************************************************\n");
+int pantallaEspera(){
+    int nuevaPantalla = 0;
+    bool opcionEsValida = true;
+    do{
+        printf("*************    Que desea realizar?   *************\n");
+        printf("* -1 - Continuar                \n");
+        printf("*  0 - Salir                     \n");
+        printf("*:");
+        scanf("%d", &nuevaPantalla);
+        int opcionesValidas[] = {0,-1, -99};
+        opcionEsValida = encontrarCoincidencia(nuevaPantalla, opcionesValidas);
+        if(!opcionEsValida) imprimirMensaje("LO SIENTO, PANTALLA NO ENCONTRADA", RED_COLOR);
+    } while(!opcionEsValida);
+    return nuevaPantalla;
 }
 
-/* CARGA SALDO
-    - Validar que la cuenta exista
-    - Guardar recarga
-
- */
-
-
+void imprimirMensaje(const char* mensaje, int color) {
+    setColorOutput(color);
+    printf("****************************************************\n");
+    printf("%s\n", mensaje);
+    printf("****************************************************\n");
+    resetColor();
+}
