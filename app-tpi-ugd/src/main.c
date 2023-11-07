@@ -18,12 +18,18 @@ void runApp(){
     int screen = -1;
     do{
         fflush(stdout);
-        if(screen == -1) screen = screenInit();
-        if(screen == 1) screen = screenRegisterAccount();
-        if(screen == 2) screen = screenViewAccounts();
 
+        if(screen == -1) {
+            screen = screenInit();
+            system("cls");
+        } else if(screen == 1) {
+            screen = screenRegisterAccount();
+            system("cls");
+        } else if(screen == 2) {
+            screen = screenViewAccounts();
+            system("cls");
+        }
     } while(screen != 0);
-
     screenEnd();
 }
 
@@ -77,3 +83,11 @@ void screenEnd(){
     printf("*************    GRACIAS POR ENTRAR    *************\n");
     printf("****************************************************\n");
 }
+
+/* CARGA SALDO
+    - Validar que la cuenta exista
+    - Guardar recarga
+
+ */
+
+

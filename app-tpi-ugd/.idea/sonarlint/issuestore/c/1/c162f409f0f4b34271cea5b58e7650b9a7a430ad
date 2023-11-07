@@ -2,6 +2,6 @@
 fc:S134"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(âµÃ 8—äå¬º1
 uc:S108"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(âµÃ 8Êì«¦º1
 Tc:S10796"5Add a field width specifier to this "%s" placeholder.(éì‚éýÿÿÿÿ8Êì«¦º1
-uc:S1089"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(âµÃ 8ó’ó¬º1
-Oc:S1659L"0Define each identifier in a dedicated statement.(”š•ïûÿÿÿÿ8Ëì«¦º1
-Lc:S35198"-Out of bound memory access (index is tainted)(¾è¸”ùÿÿÿÿ8ýãÈ­º1
+uc:S108;"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(âµÃ 8ó’ó¬º1
+Oc:S1659R"0Define each identifier in a dedicated statement.(”š•ïûÿÿÿÿ8Ëì«¦º1
+Lc:S3519:"-Out of bound memory access (index is tainted)(¾è¸”ùÿÿÿÿ8ýãÈ­º1

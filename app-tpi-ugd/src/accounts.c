@@ -7,7 +7,7 @@
 /**
  * Solicita un String por valido por teclado
  *
- * @param inputName Nombre del input que se quiere solicitar
+ * @param inputName Nombre del input que se quiere solicitar.
  * @param input Puntero del String donde se guardara el valor
  */
 void getValidStringInput(const char* inputName, char* input){
@@ -52,15 +52,21 @@ int readIntegerInput(const char* prompt) {
     do {
         printf("%s", prompt);
         scanf("%s", buffer);
+
         size_t length = strlen(buffer);
-        if (length > 0 && buffer[length - 1] == '\n')buffer[length - 1] = '\0';
-        else while (fgetc(stdin) != '\n') {}
+        //Elimina saltos de lineas del buffer
+        if (length > 0 && buffer[length - 1] == '\n') buffer[length - 1] = '\0';
+        else while (fgetc(stdin) != '\n') { }
+
+        //sscanf = Transforma el string a int, si el string es un numero valido
         if (sscanf(buffer, "%d", &value) != 1) {
             printf("Error, Debes ingresar un numero valido.\n");
             inputValid = false;
         }
+
         fflush(stdin);
     } while (!inputValid);
+
     return value;
 }
 
@@ -105,15 +111,16 @@ struct Account getAccountValidInput(){
     bool isTypeValid = false;
     do {
         printf("Dime cual es su tipo de cuenta\n");
-        printf("1 - Normal\n");
-        printf("2 - Beneficio Estudiante\n");
-        printf("3 - Beneficio malvinas\n");
-        account.type = readIntegerInput(":");
-        isTypeValid = areIntegersEqual(account.type, 1) || areIntegersEqual(account.type, 2) || areIntegersEqual(account.type, 3);
-        if(!isTypeValid){
-            printf("El tipo que ingreso no es una opcion valida");
-        }
+        printf("1 - Normal(Sin beneficio.)\n");
+        printf("2 - Boleto Estudiantil.\n");
+        printf("3 - Beneficio Discapacidad.\n");
+        printf("4 - Beneficio Anciano.\n");
+        printf("5 - Beneficio por ex combatiente de malvinas.\n");
 
+        account.type = readIntegerInput(":");
+        isTypeValid = areIntegersEqual(account.type, 1) || areIntegersEqual(account.type, 2) || areIntegersEqual(account.type, 3) || areIntegersEqual(account.type, 4) || areIntegersEqual(account.type, 5);
+
+        if(!isTypeValid) printf("El tipo que ingreso no es una opcion valida");
     } while(!isTypeValid);
 
     return account;
