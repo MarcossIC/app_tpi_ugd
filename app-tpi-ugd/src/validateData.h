@@ -9,13 +9,14 @@ int calcUserAge(int year);
 
 bool isLeapYear(int year);
 bool isValidDate(int day, int month, int year);
-bool isGreaterThan(int birthdayYear, int olderAge);
-bool isStringOnlyHasNumber(char *string, char* stringName);
-bool stringEquals(char* firstString, char* secondString);
-bool stringSizeLessThan(char* string, char* stringName, int number);
-bool stringSizeIsBetween(char* string, char* stringName, int firstNumber, int secondNumber);
-bool stringSizeGreaterThan(char* string, char* stringName, int number);
-bool stringNotContainNumber(char* string, char* stringName);
-bool stringSizeIsEqualsTo(char *string, char* stringName, int size);
+bool isOlderThan(int birthdayYear, int olderAge);
+bool isStringOnlyHasNumber(const char *string, const char* stringName);
+bool areStringsEqual(const char* firstString, const char* secondString);
+bool areIntegersEqual(int firstNumber, int secondNumber);
+bool isStringLengthLessThan(const char* string, const char* stringName, int minSize);
+bool isStringLengthBetween(const char* string, const char* stringName, int minSize, int maxSize);
+bool isStringLengthGreaterThan(const char* string, const char* stringName, int maxSize);
+bool doesStringNotContainDigits(const char* string, const char* stringName);
+bool isStringLengthEqualTo(const char *string, const char* stringName, int size);
 
 #endif //APP_TPI_UGD_VALIDATEDATA_H

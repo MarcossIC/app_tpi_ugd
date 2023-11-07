@@ -13,27 +13,19 @@ struct Account{
     char lastName[50];
     char dni[50];
     char address[50];
-    char birthDay[50];
+    char birthDay[11];
     char cellphone[50];
-    char type[20];
+    int type;
 };
 
-typedef struct {
-    char name[50];
-    char lastName[50];
-    char dni[50];
-    char address[50];
-    char birthDay[20];
-    char cellphone[50];
-    char type[50];
-} Account2;
+int saveAccount(struct Account user);
+int listAllRegisteredAccounts();
+void getValidStringInput(const char* inputName, char* input);
+void getValidDate(const char* dateName, char* date);
+int readIntegerInput(const char* prompt);
+struct Account getAccountValidInput();
 
-int createUserAccount(struct Account user);
-char* getValidStringInput(char* inputName);
-char* getValidDate(char* dateName);
-struct Account getRegisterValidInput();
-
-bool isDniValid(char* dni);
-bool isCellphoneValid(char* cellphone);
-bool isNamesValid(char* name, char* nameType);
+bool isDniValid(const char* dni);
+bool isCellphoneValid(const char* cellphone);
+bool isNamesValid(const char* name, const char* nameType);
 #endif //APP_TPI_UGD_ACCOUNTS_H

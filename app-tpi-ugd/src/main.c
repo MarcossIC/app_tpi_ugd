@@ -4,10 +4,10 @@
 #include <string.h>
 
 void runApp();
-void screen0();
+void screenEnd();
 int screenInit();
 int screenRegisterAccount();
-void screenEnd();
+int screenViewAccounts();
 
 int main() {
     runApp();
@@ -17,8 +17,10 @@ int main() {
 void runApp(){
     int screen = -1;
     do{
+        fflush(stdout);
         if(screen == -1) screen = screenInit();
         if(screen == 1) screen = screenRegisterAccount();
+        if(screen == 2) screen = screenViewAccounts();
 
     } while(screen != 0);
 
@@ -42,22 +44,30 @@ int screenInit(){
     return updatePage;
 }
 
-void screen3(){
+int screenViewAccounts(){
+    printf("****************************************************\n");
+    printf("*************** LISTA DE CUENTAS *****************\n");
+    printf("****************************************************\n");
 
+    int counting = listAllRegisteredAccounts();
+    printf("****************************************************\n");
+    printf("*                 GRACIAS POR VER                  *\n");
+    printf("             Hay %d cuentas registradas            \n", counting);
+    printf("****************************************************\n");
+    return -1;
 }
 
 int screenRegisterAccount(){
-
     printf("****************************************************\n");
     printf("*************** REGISTRO DE CUENTA *****************\n");
     printf("****************************************************\n");
-    struct Account account = getRegisterValidInput();
+    struct Account account = getAccountValidInput();
     printf("****************************************************\n");
 
-    int error = createUserAccount(account);
+    int error = saveAccount(account);
     printf("****************************************************\n");
     if(error == 1) printf("* Error al crear el usuario.                       *\n");
-    else printf("* Te has registrado con exito.                     *\n");
+    if(error == 0) printf("* Te has registrado con exito.                     *\n");
     printf("****************************************************\n");
     return -1;
 }
