@@ -1,0 +1,5 @@
+
+Pc:S1659‰"0Define each identifier in a dedicated statement.(±¹»ºùÿÿÿÿ8éÂçÎ»1
+gc:S134ª"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(…ı€“8ùÂçÎ»1
+wc:S5782M"]"snprintf" overflows write buffer "mensaje"; passed size "100" (100) exceeds buffer size (60)(µ¥–8úïçÎ»1
+Dc:S1854Å"$Value stored to 'flag' is never read(ÚÄ¦òøÿÿÿÿ8úïçÎ»1

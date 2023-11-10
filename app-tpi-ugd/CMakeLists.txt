@@ -12,6 +12,8 @@ add_executable(app_tpi_ugd src/main.c
         src/inputs.h
         src/cuenta.c
         src/cuenta.h
-        src/cargarSaldo.c
-        src/cargarSaldo.h
+        src/movimientos.c
+        src/movimientos.h
+        src/validaciones.c
+        src/validaciones.h
 )

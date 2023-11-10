@@ -6,25 +6,19 @@
 #include "utilidades.h"
 
 /**
- *
+ *<
  * @author Thyago
  * @return
  */
 int obtenerUltimoIdDeCuenta(){
     //Se busca la ultima id
-
-    FILE *Users;
-    struct Cuenta Cuentas;
-    int lastId = 0; // Variable que va a tener la ultima id
-    if((Users=fopen("assets/Cuenta.dat","rb"))!=NULL){
-        fread (&Cuentas, sizeof(struct Cuenta),1,Users);
-        while (!feof(Users)){
-            fread (&Cuentas, sizeof(struct Cuenta),1,Users);
-            if (lastId<=Cuentas.id){
-                lastId=Cuentas.id;
-            }
-        }
-        fclose(Users);
+    FILE *CuentaArch;
+    int lastId = 1; // Variable que va a tener la ultima id
+    if((CuentaArch=fopen("assets/Cuenta.dat","ab"))!=NULL){
+        fseek(CuentaArch, -sizeof(struct Cuenta), SEEK_END);
+        struct Cuenta Cuentas;
+        if(fread(&Cuentas, sizeof(struct Cuenta),1,CuentaArch)) lastId=Cuentas.id;
+        fclose(CuentaArch);
     }
     return lastId;
 }
@@ -37,20 +31,20 @@ int obtenerUltimoIdDeCuenta(){
  */
 int buscarIdCuenta(char* DNI) {
     FILE *Cuenta;
-    int id;
+    int id = 0;
     struct Cuenta cuentas;
+    bool encontroElId = false;
     if ((Cuenta = fopen("assets/Cuenta.dat", "rb")) != NULL) {
-        rewind(Cuenta);
-        fread(&cuentas, sizeof(struct Cuenta), 1, Cuenta);
-        while (!feof(Cuenta)) {
-            if (strcmp(DNI, cuentas.DNI) == 0) {
+        while (!encontroElId && fread(&cuentas, sizeof(struct Cuenta), 1, Cuenta)) {
+            if (areStringsEqual(DNI, cuentas.DNI)) {
                 id = cuentas.id;
-            } else fread(&cuentas, sizeof(struct Cuenta), 1, Cuenta);
-
+                encontroElId = true;
+            }
         }
     }
     return id;
 }
+
 /**
  *
  * @author Matias
@@ -71,33 +65,89 @@ int guardarCuenta(struct Cuenta cuenta){
 }
 
 /**
+ * Actualiza el saldo de una cuentra registrada por un DNI como referencia
  *
- * @author
+ * @author Matias y Thiago
  * @param idCuenta
  * @param saldoExtra
+ * @param excedente
  * @return
  */
-int actualizarSaldoCuenta(int idCuenta, int saldoExtra){
+int actualizarSaldoCuenta(int idCuenta, float saldoExtra, int *excedente){
     struct Cuenta cuentas;
     FILE *Arch;
     int error=0;
-    int tope=1000;
     bool bandera = false;
-    if((Arch=fopen("assests/Cuenta.dat","r+b"))!=NULL){
+    if((Arch=fopen("assets/Cuenta.dat","r+b"))!=NULL){
         while(!bandera && fread(&cuentas, sizeof(struct Cuenta), 1, Arch) == 1){
+
             if(cuentas.id==idCuenta){
-                cuentas.saldo+=saldoExtra;
-                if(cuentas.saldo <= tope){
-                    fseek(Arch, -sizeof(struct Cuenta), SEEK_CUR);
-                    fwrite(&cuentas,sizeof(struct Cuenta),1,Arch);
-                    bandera = true;
-                } else error = 2;
+                cuentas.saldo+=saldoExtra;//
+                printf("\n saldo: %.2f, \b saldo extra: %.2f \n", cuentas.saldo, saldoExtra);
+                if(cuentas.saldo > TOPE){
+                    *excedente = cuentas.saldo - TOPE;
+                    cuentas.saldo = TOPE;
+                    setColorOutput(GREEN_COLOR);
+                    printf("El saldo excede el limite de $%d, le devolveremos $%d \n ", TOPE, *excedente);
+                    resetColor();
+                }
+                fseek(Arch, -sizeof(struct Cuenta), SEEK_CUR);
+                fwrite(&cuentas,sizeof(struct Cuenta),1,Arch);
+                bandera = true;
             } else error = 2;
         }
         fclose(Arch);
     }else{
-        printf ("erorr al abrir");
+        printf ("erorr al abrir\n");
         error=1;
     }
     return error;
+}
+
+
+
+/**
+ * Consulta el saldo de una cuenta registra por un DNI como referencia
+ *
+ * @author Thyago
+ * @param DNI
+ * @return float
+ */
+float recuperarSaldo(const char* DNI){
+    struct Cuenta cuentas;
+    FILE *Arch;
+    bool encontroElDNI = false;
+    float saldo;
+    if((Arch=fopen("assets/Cuenta.dat","rb"))!=NULL){
+        while (!encontroElDNI && fread(&cuentas, sizeof(struct Cuenta), 1, Arch)) {
+            if (areStringsEqual(DNI, cuentas.DNI)) {
+                saldo= cuentas.saldo;
+                encontroElDNI = true;
+            }
+        }
+        fclose(Arch);
+    } else {
+        printf ("Error al abrir el archivo Cuenta en consultar saldo \n");
+    }
+    return saldo;
+}
+
+/**
+ * Busca un struct de cuenta en el archivo por un DNI como referencia
+ *
+ * @author Marcos
+ * @param DNI
+ * @return
+ */
+struct Cuenta recuperarCuenta(const char* DNI){
+    struct Cuenta cuenta;
+    FILE* cuentaArch;
+    bool encontreLaCuenta = false;
+    if((cuentaArch=fopen("assets/Cuenta.dat", "rb")) != NULL){
+        while (!encontreLaCuenta && fread(&cuenta, sizeof(struct Cuenta), 1, cuentaArch)) {
+            if (areStringsEqual(DNI, cuenta.DNI)) encontreLaCuenta = true;
+        }
+        fclose(cuentaArch);
+    } else printf ("Error al abrir el archivo");
+    return cuenta;
 }

@@ -1,0 +1,10 @@
+
+€c:S5276"fimplicit conversion from 'unsigned long long' to 'long' changes value from 18446744073709551592 to -24(…Ëëô8Õ§Ì»1
+mc:S5276X"Nimplicit conversion turns floating-point number into integer: 'float' to 'int'(°‰Üûşÿÿÿÿ8úêÏ»1
+…c:S5276^"fimplicit conversion from 'unsigned long long' to 'long' changes value from 18446744073709551592 to -24(”â…«úÿÿÿÿ8¿ÑÚÏ»1
+dc:S876"KRemove the unary minus operator or change the expression's underlying type.(…Ëëô8¢Ö§Ì»1
+sc:S995 "ZMake the type of this parameter a pointer-to-const. The current type of "DNI" is "char *".(˜ƒ¸À8¿ñÆ´»1
+ec:S134W"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ğª›^8¼ÒÚÏ»1
+ic:S876^"KRemove the unary minus operator or change the expression's underlying type.(”â…«úÿÿÿÿ8ÄÒÚÏ»1
+Mc:S2095-"3Opened stream never closed. Potential resource leak(ì”Å©8›÷Æ´»1
+Lc:S836„"-Undefined or garbage value returned to caller(®—“ğşÿÿÿÿ8ÿÓÚÏ»1
