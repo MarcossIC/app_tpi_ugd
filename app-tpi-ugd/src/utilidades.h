@@ -16,14 +16,25 @@
 #define YELLOW_COLOR 14
 #define WHITE_COLOR 7
 #define BLUE_COLOR 9
-#define DARK_GREEN 10
+#define DARK_GREEN_COLOR 10
 
+struct Fecha {
+    int dia;
+    int mes;
+    int anho;
+};
 
 int calcularEdad(int year);
 void clearConsole();
 void setColorOutput(int foregroundColor);
 void resetColor();
-const char* recuperarTipoBocaPago(const int tipo);
+
 void imprimirMensaje(const char* mensaje, int color);
+int compararFechas(const char *firstDate, const char *secondDate);
+const char* recuperarTipoBocaPago(const int tipo);
+const char* recuperarTipoCuenta(const int tipo);
+const char* recuperarDireccion(const int tipo);
+struct Fecha desComponerFecha(const char* fecha);
+int getCurrentYear();
 
 #endif //APP_TPI_UGD_UTILIDADES_H

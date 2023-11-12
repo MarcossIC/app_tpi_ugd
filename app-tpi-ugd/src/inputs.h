@@ -9,10 +9,11 @@
 
 void escribirStringValido(const char* nombreInput, char* input);
 void escribirFechaValida(const char* dateName, char* date);
-int escribirEnteroValido(const char* prompt);
+int escribirEnteroValido(const char* prompt, bool esBinario);
 float escribirNumeroDecimalValido(const char* prompt);
 int recuperarHoraActual();
 void recuperarFechaActual(char* date);
+int getCurrentYear();
 float escribirMontoValido(const char* prompt, float limite, float minimo);
 
 #endif //APP_TPI_UGD_INPUTS_H

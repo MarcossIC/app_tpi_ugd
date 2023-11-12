@@ -1,7 +1,3 @@
-//
-// Created by usuario on 6/11/2023.
-//
-
 #include "cuenta.h"
 #include "utilidades.h"
 
@@ -78,16 +74,16 @@ int actualizarSaldoCuenta(int idCuenta, float saldoExtra, int *excedente){
     FILE *Arch;
     int error=0;
     bool bandera = false;
+
     if((Arch=fopen("assets/Cuenta.dat","r+b"))!=NULL){
         while(!bandera && fread(&cuentas, sizeof(struct Cuenta), 1, Arch) == 1){
 
             if(cuentas.id==idCuenta){
                 cuentas.saldo+=saldoExtra;//
-                printf("\n saldo: %.2f, \b saldo extra: %.2f \n", cuentas.saldo, saldoExtra);
                 if(cuentas.saldo > TOPE){
                     *excedente = cuentas.saldo - TOPE;
                     cuentas.saldo = TOPE;
-                    setColorOutput(GREEN_COLOR);
+                    setColorOutput(YELLOW_COLOR);
                     printf("El saldo excede el limite de $%d, le devolveremos $%d \n ", TOPE, *excedente);
                     resetColor();
                 }
@@ -117,7 +113,7 @@ float recuperarSaldo(const char* DNI){
     struct Cuenta cuentas;
     FILE *Arch;
     bool encontroElDNI = false;
-    float saldo;
+    float saldo = 0;
     if((Arch=fopen("assets/Cuenta.dat","rb"))!=NULL){
         while (!encontroElDNI && fread(&cuentas, sizeof(struct Cuenta), 1, Arch)) {
             if (areStringsEqual(DNI, cuentas.DNI)) {
@@ -127,7 +123,7 @@ float recuperarSaldo(const char* DNI){
         }
         fclose(Arch);
     } else {
-        printf ("Error al abrir el archivo Cuenta en consultar saldo \n");
+        printf ("Error al abrir el archivo Cuenta en consultar saldo.\n");
     }
     return saldo;
 }

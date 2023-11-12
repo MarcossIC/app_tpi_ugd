@@ -91,6 +91,12 @@ build CMakeFiles/app_tpi_ugd.dir/src/validaciones.c.obj: C_COMPILER__app_tpi_ugd
   OBJECT_DIR = CMakeFiles\app_tpi_ugd.dir
   OBJECT_FILE_DIR = CMakeFiles\app_tpi_ugd.dir\src
 
+build CMakeFiles/app_tpi_ugd.dir/src/transportes.c.obj: C_COMPILER__app_tpi_ugd_unscanned_Debug C$:/Users/usuario/Desktop/Marcos/Programacion/TPI/app_tpi_ugd/app-tpi-ugd/src/transportes.c || cmake_object_order_depends_target_app_tpi_ugd
+  DEP_FILE = CMakeFiles\app_tpi_ugd.dir\src\transportes.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\app_tpi_ugd.dir
+  OBJECT_FILE_DIR = CMakeFiles\app_tpi_ugd.dir\src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target app_tpi_ugd
@@ -99,7 +105,7 @@ build CMakeFiles/app_tpi_ugd.dir/src/validaciones.c.obj: C_COMPILER__app_tpi_ugd
 #############################################
 # Link the executable app_tpi_ugd.exe
 
-build app_tpi_ugd.exe: C_EXECUTABLE_LINKER__app_tpi_ugd_Debug CMakeFiles/app_tpi_ugd.dir/src/main.c.obj CMakeFiles/app_tpi_ugd.dir/src/user.c.obj CMakeFiles/app_tpi_ugd.dir/src/utilidades.c.obj CMakeFiles/app_tpi_ugd.dir/src/inputs.c.obj CMakeFiles/app_tpi_ugd.dir/src/cuenta.c.obj CMakeFiles/app_tpi_ugd.dir/src/movimientos.c.obj CMakeFiles/app_tpi_ugd.dir/src/validaciones.c.obj
+build app_tpi_ugd.exe: C_EXECUTABLE_LINKER__app_tpi_ugd_Debug CMakeFiles/app_tpi_ugd.dir/src/main.c.obj CMakeFiles/app_tpi_ugd.dir/src/user.c.obj CMakeFiles/app_tpi_ugd.dir/src/utilidades.c.obj CMakeFiles/app_tpi_ugd.dir/src/inputs.c.obj CMakeFiles/app_tpi_ugd.dir/src/cuenta.c.obj CMakeFiles/app_tpi_ugd.dir/src/movimientos.c.obj CMakeFiles/app_tpi_ugd.dir/src/validaciones.c.obj CMakeFiles/app_tpi_ugd.dir/src/transportes.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\app_tpi_ugd.dir

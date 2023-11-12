@@ -25,13 +25,32 @@ void clearConsole() {
 }
 
 const char* recuperarTipoBocaPago(const int tipo){
-    const char buffer[50];
-    if(tipo == 1) strcpy(buffer, "");
-    if(tipo == 2) strcpy(buffer, "");
-    if(tipo == 3) strcpy(buffer, "");
-    if(tipo == 4) strcpy(buffer, "");
-    if(tipo == 5) strcpy(buffer, "");
-    if(tipo == 6) strcpy(buffer, "");
+    char* buffer = NULL;
+    if(tipo == 1) buffer= strdup("Santander Rio");
+    if(tipo == 2) buffer= strdup( "Banco Nacion");
+    if(tipo == 3) buffer= strdup("Banco Corrientes");
+    if(tipo == 4) buffer= strdup("Banco Macro");
+    if(tipo == 5) buffer= strdup("Banco Galicia");
+    if(tipo == 6) buffer= strdup("Personal Pay");
+    if(tipo == 7) buffer= strdup("Mercado Pago");
+    return buffer;
+}
+
+const char* recuperarTipoCuenta(const int tipo){
+    char* buffer = NULL;
+    if(tipo == 1) buffer= strdup("Normal");
+    if(tipo == 2) buffer= strdup( "Boleto Estudiantil.");
+    if(tipo == 3) buffer= strdup("Beneficio Discapacidad.");
+    if(tipo == 4) buffer= strdup("Beneficio Anciano.");
+    if(tipo == 5) buffer= strdup("Beneficio por ex combatiente de malvinas.");
+    return buffer;
+}
+
+const char* recuperarDireccion(const int tipo){
+    char* buffer = NULL;
+    if(tipo == 1) buffer= strdup("Posadas.");
+    if(tipo == 2) buffer= strdup( "Calendario.");
+    if(tipo == 3) buffer= strdup("Beneficio Discapacidad.");
     return buffer;
 }
 
@@ -59,4 +78,14 @@ void imprimirMensaje(const char* mensaje, int color) {
     printf("%s\n", mensaje);
     printf("****************************************************\n");
     resetColor();
+}
+
+int compararFechas(const char *fechaUno, const char *fechaDos) {
+    return strcmp(fechaUno, fechaDos);
+}
+
+struct Fecha desComponerFecha(const char* fecha){
+    struct Fecha fechaS = {0,0,0};
+    sscanf(fecha, "%d-%d-%d", &fechaS.anho, &fechaS.mes, &fechaS.dia);
+    return fechaS;
 }

@@ -21,6 +21,8 @@ bool numberIsFoundIn(int number, const int numbers[]);
 bool isWindowsOS();
 bool isValidDNI(const char* dni);
 bool isCellphoneValid(const char* cellphone);
+bool isAddressValid(const char* address);
 bool isNameValid(const char* name, const char* nameType);
-
+bool dateIsBetween(const char *date, const char *startDate, const char *endDate);
+bool validarOpciones(const int opcion, const int* opcionesValidas);
 #endif //APP_TPI_UGD_VALIDACIONES_H

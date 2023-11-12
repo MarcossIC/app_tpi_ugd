@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "inputs.h"
 #include "utilidades.h"
+#include "user.h"
 
 struct Recargas{
     char DNI[10];
@@ -12,15 +13,15 @@ struct Recargas{
     float monto;
     int bocaDePago;
     char fecha[11];
-    char hora[10];
+    int hora;
 };
 
 struct Movimiento{
     char DNI[10];
     int idCuenta;
     char telefono[11];
-    char origen[20];
-    char destino[20];
+    int origen;
+    int destino;
     float montoUtilizado;
     int idUnidad;
     char fecha[11];
@@ -31,5 +32,10 @@ struct Movimiento{
 struct Movimiento crearNuevoMovimiento(int tipoDeUso);
 int guardarRecarga(struct Recargas recarga);
 int guardarMovimientos(struct Movimiento movimiento);
+int listarMovimientosEntreFechas(const char* fechaInicio, const char* fechaFin);
+void generarComrpobante(const char* name, struct Recargas recarga);
+float contadorPorcentajePrimerTurno ();
+int listarRecargaPorUsuario(const char *DNI);
+int listarMovimientoPorUsuario(const char* DNI);
 
 #endif //APP_TPI_UGD_MOVIMIENTOS_H

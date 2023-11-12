@@ -9,9 +9,7 @@
  * @return Booleano
  */
 bool areStringsEqual(const char* firstString, const char* secondString){
-    bool areStringsEqual = false;
-    if (strcmp(firstString, secondString) == 0) areStringsEqual = true;
-    return areStringsEqual;
+    return strcmp(firstString, secondString) == 0;
 }
 
 /**
@@ -45,7 +43,7 @@ bool isStringLengthGreaterThan(const char* string, const char* stringName, int m
     bool isStringLengthGreaterThan = true;
     if (strlen(string) <= maxSize) {
         isStringLengthGreaterThan =  false;
-        printf("Error, El %s no puede ser menor a %d caracteres.\n", stringName, maxSize);
+        printf("Error, %s no puede ser menor a %d caracteres.\n", stringName, maxSize);
     }
     return isStringLengthGreaterThan;
 }
@@ -82,7 +80,7 @@ bool doesStringNotContainDigits(const char* string, const char* stringName){
     //En caso de tener false
     if (strcspn(string, "0123456789") < strlen(string)) {
         doesStringNotContainDigits =  false;//False, es que si contiene
-        printf("Error, El %s no puede contener numeros.\n", stringName);
+        printf("Error, %s no puede contener numeros.\n", stringName);
     }
     return doesStringNotContainDigits;
 }
@@ -203,6 +201,15 @@ bool numberIsFoundIn(int number, const int numbers[]) {
     }
     return numberIsFound;
 }
+
+// Función para validar si una fecha está entre otras dos fechas
+bool dateIsBetween(const char *date, const char *startDate, const char *endDate) {
+    int startComp = compararFechas(date, startDate);
+    int endComp = compararFechas(date, endDate);
+
+    return (startComp >= 0) && (endComp <= 0);
+}
+
 /**
  * Valida el formato del DNI
  *
@@ -232,6 +239,18 @@ bool isCellphoneValid(const char* cellphone){
 bool isNameValid(const char* name, const char* nameType){
     return doesStringNotContainDigits(name, nameType) && isStringLengthGreaterThan(name, nameType, 2);
 }
+
+bool isAddressValid(const char* address){
+    return doesStringNotContainDigits(address, "direccion") && isStringLengthGreaterThan(address, "direccion", 3);
+}
+
+bool validarOpciones(const int opcion, const int* opcionesValidas){
+    bool opcionEsValida = false;
+    opcionEsValida = numberIsFoundIn(opcion, opcionesValidas);
+    if(!opcionEsValida) imprimirMensaje("Opcio no valida.", RED_COLOR);
+    return opcionEsValida;
+}
+
 /**
  * Verifica si el sistema operativo es Windows
  * @return

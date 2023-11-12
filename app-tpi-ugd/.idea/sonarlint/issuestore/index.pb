@@ -18,8 +18,6 @@ src/user.c,1\9\190ff92ecaf046fb41de64f7030824e140f1f39a
 src/utilidades.c,7\e\7e64d1aa095f79f71ed30fd72d5cb5d1af29163a
 >
 CMakeLists.txt,9\a\9a2aa4db38d3115ed60da621e012c0efc0172aae
-F
-src/assets/Cuentas.dat,3\a\3a2fa343332da1110b054d0ac079b2f3ef5c7493
 G
 src/assets/Recargas.dat,9\2\928da57b24a9f11b0a9d45784427ab9bb61bcb84
 J
@@ -42,3 +40,7 @@ B
 src/validaciones.h,a\5\a556162496a73d98ddacd788ad94e00ac82254e4
 B
 src/validaciones.c,4\f\4f70c028a23402a3f9f90856640a0939d2cc7669
+A
+src/transportes.c,6\a\6a5c9039cfb95228afb0ee964f098d52222876d6
+A
+src/transportes.h,6\d\6daac945bb543a2b1e5e7c1c9517834e5f357348

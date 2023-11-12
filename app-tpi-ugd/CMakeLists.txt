@@ -16,4 +16,6 @@ add_executable(app_tpi_ugd src/main.c
         src/movimientos.h
         src/validaciones.c
         src/validaciones.h
+        src/transportes.c
+        src/transportes.h
 )
