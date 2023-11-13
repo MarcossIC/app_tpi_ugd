@@ -5,8 +5,8 @@
 #include "utilidades.h"
 #include "inputs.h"
 #include "transportes.h"
-
-void clearConsole();
+#include "transportes.h"
+#include <locale.h>
 
 void ejecutarApp();
 int vistaInicio();
@@ -25,7 +25,9 @@ int vistaListarUnidades();
 int vistaListarChoferes();
 int vistaPorcentajePrimerTurno();
 int vistaMovimientosPorUsuario();
+
 int main() {
+    setlocale(LC_ALL, "");
     ejecutarApp();
     return 0;
 }
@@ -92,8 +94,8 @@ int vistaInicio(){
         printf("*   9 - Listar Recargas por Usuario                 *\n");
         printf("*  10 - Registrar Chofer                            *\n");
         printf("*  11 - Registrar Unidad                            *\n");
-        printf("*  12 - Listar Unidad                               *\n");
-        printf("*  13 - Listar Choferes                             *\n");
+        printf("*  12 - Listar Choferes                             *\n");
+        printf("*  13 - Listar Unidad                               *\n");
         printf("*  14 - Porcentaje de Movimientos el Primer turno   *\n");
         printf("*  15 - Listar Movimientos de un Usuario            *\n");
         printf("*  0 - Salir                                        *\n");
@@ -160,13 +162,14 @@ int vistaCargaSaldo(){
             recuperarFechaActual(recarga.fecha);
             recarga.hora = recuperarHoraActual();
             //Actualizar Saldo de cuenta
-            int excedente;
+            float excedente;
             actualizarSaldoCuenta(recarga.idCuenta,recarga.monto, &excedente);
-            recarga.monto-=excedente;
             //Guardar recarga
             guardarRecarga(recarga);
             //Generar comprobante
-            generarComrpobante("Comprobante.txt", recarga);
+            char nombreComprobante[40];
+            snprintf(nombreComprobante, 40, "comprobante%d %s-%d-%s.txt", recarga.idCuenta, recarga.fecha, recarga.hora, recarga.DNI);
+            generarComrpobante(nombreComprobante, recarga);
     } else imprimirMensaje("LO SIENTO, el dni ingresado no se encuentra registrado.", YELLOW_COLOR);
     return -2;
 }
@@ -179,22 +182,23 @@ int vistaUsarSaldo(int tipoDeUso){
     escribirStringValido("DNI", DNI);
     struct Cuenta cuenta = recuperarCuenta(DNI);
 
-    if(cuenta.id != NULL && cuenta.id != 0){
+    if(cuenta.id != 0){
         if(cuenta.saldo > -200){
             struct Movimiento movimiento = crearNuevoMovimiento(tipoDeUso);
             bool unidadExiste = true;
             do{
                 movimiento.idUnidad = escribirEnteroValido("Dime en que unidad viajas:", false);
-                bool unidadExiste = unidadExistePorId(movimiento.idUnidad);
-                if(!unidadExiste) imprimirMensaje("Esta unidad no esta registrada", YELLOW_COLOR);
+                unidadExiste = unidadExistePorId(movimiento.idUnidad);
+                if(!unidadExiste) imprimirMensaje("Esta unidad no esta registrada.", YELLOW_COLOR);
             } while(!unidadExiste);
 
             struct Usuario  usuario = recuperarUsuario(DNI);
             strcpy(movimiento.DNI, DNI);
             movimiento.idCuenta = cuenta.id;
             strcpy(movimiento.telefono, usuario.telefono);
-            movimiento.montoUtilizado = 200;
+            definirPrecio(&movimiento.montoUtilizado, usuario.tipo, movimiento.origen, movimiento.destino, movimiento.hora);
             int error = guardarMovimientos(movimiento);
+
             if (error == 0) {
                 error = actualizarSaldoCuenta(movimiento.idCuenta, movimiento.montoUtilizado * -1, 0);
                 if(error == 0) imprimirMensaje("Has usado tu saldo", GREEN_COLOR);
@@ -283,7 +287,7 @@ int vistaCrearChofer(){
 }
 
 int vistaCrearUnidad(){
-    imprimirMensaje("REGISTRO DE UNIDAD", AQUAMARINE_COLOR);
+    imprimirMensaje("REGISTRO DE UNIDAD.", AQUAMARINE_COLOR);
     struct Unidad unidad = crearNuevaUnidad();
     printf("****************************************************\n");
     int error = guardarUnidad(unidad);
@@ -303,9 +307,7 @@ int vistaListarChoferes(){
 }
 
 int vistaListarUnidades(){
-
     imprimirMensaje("LISTA DE UNIDAD", AQUAMARINE_COLOR);
-
     int cuenta = listarUnidades();
     if(cuenta == 0) imprimirMensaje("No hay unidades registradas", YELLOW_COLOR);
 
@@ -313,10 +315,10 @@ int vistaListarUnidades(){
 }
 
 int vistaPorcentajePrimerTurno() {
-    imprimirMensaje("PORCENTAJE USUARIOS EN PRIMER TURNO DURANTE EL AÑO", YELLOW_COLOR);
+    imprimirMensaje("PORCENTAJE USUARIOS EN EL PRIMER TURNO", AQUAMARINE_COLOR);
     char mensaje[50];
     float porcentaje = contadorPorcentajePrimerTurno();
-    snprintf(mensaje, 50, "El porcentaje es %.2f", porcentaje);
+    snprintf(mensaje, 50, "El porcentaje es %c%.2f",37 , porcentaje);
     imprimirMensaje(mensaje, DARK_GREEN_COLOR);
     return -2;
 }
@@ -326,10 +328,10 @@ int vistaEspera(){
     bool opcionEsValida = true;
     printf("****************************************************\n");
     printf("*************    Que desea realizar?   *************\n");
-    printf("* -1 - Continuar                \n");
+    printf("*  1 - Continuar                \n");
     printf("*  0 - Salir                    \n");
     nuevaVista = escribirEnteroValido("*:", true);
-    return nuevaVista;
+    return nuevaVista*-1;
 }
 
 int vistaMovimientosPorUsuario(){

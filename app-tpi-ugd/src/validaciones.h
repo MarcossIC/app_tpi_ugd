@@ -25,4 +25,7 @@ bool isAddressValid(const char* address);
 bool isNameValid(const char* name, const char* nameType);
 bool dateIsBetween(const char *date, const char *startDate, const char *endDate);
 bool validarOpciones(const int opcion, const int* opcionesValidas);
+bool isLessThan(int birthdayYear, int olderAge);
+
 #endif //APP_TPI_UGD_VALIDACIONES_H
+

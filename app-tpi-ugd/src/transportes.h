@@ -10,10 +10,10 @@ struct Chofer {
     char DNI[10];
     char nombre[30];
     char apellido[30];
-    char fechaNacimiento[10];
-    char telefono[10];
-    char email[128];
-    char direccion[30];
+    char fechaNacimiento[11];
+    char telefono[11];
+    char email[100];
+    int direccion;
 };
 
 struct Unidad {
@@ -39,3 +39,4 @@ int listarChoferes();
 int listarUnidades();
 
 #endif //APP_TPI_UGD_TRANSPORTES_H
+

@@ -38,38 +38,35 @@ void escribirStringValido(const char* nombreInput, char* input){
 }
 
 /**
+ * Pide por teclado un numero decimal valido
  *
- * @param prompt
+ * @param prompt Mensaje para mostrar al usuario al solicitaar
  * @return
  */
 float escribirNumeroDecimalValido(const char* prompt) {
     float value = 0;
     bool esValidoELInput;
     char buffer[20];
-    do {
+    do{
         esValidoELInput = true;
         printf("%s", prompt);
-        scanf("%s", buffer);
-
-        size_t length = strlen(buffer);
-        //Elimina saltos de lineas del buffer
-        if (length > 0 && buffer[length - 1] == '\n') buffer[length - 1] = '\0';
-        else while (fgetc(stdin) != '\n') { }
-
-        //sscanf = Transforma el string a int, si el string es un numero valido
-        if (sscanf(buffer, "%f", &value) != 1) {
-            setColorOutput(RED_COLOR);
-            printf("Error, Debes ingresar un numero valido.\n");
-            resetColor();
+        if(scanf("%f", &value) != 1){
+            imprimirMensaje("Error, Debes ingresar un numero valido.", RED_COLOR);
             esValidoELInput = false;
         }
-
         fflush(stdin);
     } while (!esValidoELInput);
-
     return value;
 }
 
+/**
+ * Solicita un monto valido por teclado
+ *
+ * @param prompt Mensaje para solicitar el monto
+ * @param limite Limite maximo del monto
+ * @param minimo Valor minimo del monto
+ * @return
+ */
 float escribirMontoValido(const char* prompt, float limite, float minimo){
     bool esValidoElMonto;
     float monto = 0;
@@ -93,37 +90,27 @@ float escribirMontoValido(const char* prompt, float limite, float minimo){
 
 /**
  * Solicita un Entero por teclado
-
+ *
  * @param prompt Mensaje que se mouestra en consola al solicitar
  * @return Retorna el entero que se escribio
  */
 int escribirEnteroValido(const char* prompt, bool esBinario) {
     int value = 0;
     bool inputValid;
-    char buffer[20];
-    do {
+    do{
         inputValid = true;
         printf("%s", prompt);
-        scanf("%s", buffer);
-
-        size_t length = strlen(buffer);
-        //Elimina saltos de lineas del buffer
-        if (length > 0 && buffer[length - 1] == '\n') buffer[length - 1] = '\0';
-        else while (fgetc(stdin) != '\n') { }
-
-        //sscanf = Transforma el string a int, si el string es un numero valido
-        if (sscanf(buffer, "%d", &value) != 1) {
-            imprimirMensaje("No es una opcion valida", RED_COLOR);
+        if(scanf("%d", &value) != 1){
+            imprimirMensaje("No es un valor valido", RED_COLOR);
             inputValid = false;
         }
+        fflush(stdin);
         if(esBinario){
             int opcionesValidas[] = {1, 0, -99};
             inputValid = numberIsFoundIn(value, opcionesValidas);
             if(!inputValid) imprimirMensaje("No es una opcion valida", YELLOW_COLOR);
         }
-        fflush(stdin);
     } while (!inputValid);
-
     return value;
 }
 
@@ -135,24 +122,48 @@ int escribirEnteroValido(const char* prompt, bool esBinario) {
  * @param date Puntero a la variable donde se guardara la fecha
  */
 void escribirFechaValida(const char* dateName, char* date){
-    bool isDateValid;
+    bool esUnaFechaValida;
     int day, month, year;
     do {
-        isDateValid = true;
+        esUnaFechaValida = true;
         printf("Ingresa su Fecha de %s \n", dateName);
         day = escribirEnteroValido("Dia:", false);
         month = escribirEnteroValido("Mes:", false);
-        year = escribirEnteroValido("Año:", false);
+        year = escribirEnteroValido("A\xf1o:", false);
 
-        isDateValid = isValidDate(day, month, year);
-        if(isDateValid && areStringsEqual(dateName, "nacimiento")) isDateValid = isOlderThan(year, 6) && !isOlderThan(year, 100);
+        esUnaFechaValida = isValidDate(day, month, year);
+        if(esUnaFechaValida && areStringsEqual(dateName, "nacimiento")) {
+            esUnaFechaValida = isOlderThan(year, 6) && isLessThan(year, 100);
+        }
+
         //Formato de la fecha
         snprintf(date, 11, "%04d-%02d-%02d", year, month, day);
         fflush(stdin);
-    } while(!isDateValid);
+    } while(!esUnaFechaValida);
 }
 
 /**
+ * Solicita una direccion valida por teclado
+ * Direccion entre Posadas - Garupa - Candelaria
+ *
+ * @param nombreDireccion Nombre o tipo de direccion, ejemplo "direccion", "origen", "destino"
+ * @return
+ */
+int escribirDireccionValida(const char* nombreDireccion){
+    bool direccionValida = false;
+    int direccion = 0;
+    do{
+        printf("Dime cual es tu %s:",nombreDireccion);
+        direccion = escribirEnteroValido("\n1 - Posadas\n2 - Garupa\n3 - Candelaria\n:", false);
+        int opcionesValidas[] = {1,2,3,-99};
+        direccionValida = validarOpciones(direccion, opcionesValidas);
+    } while(!direccionValida);
+
+    return direccion;
+}
+
+/**
+ * Recupera la hora actual del sistema
  * @return
  */
 int recuperarHoraActual(){
@@ -163,6 +174,8 @@ int recuperarHoraActual(){
 }
 
 /**
+ * Recupera el año acutal del sistema
+ * Nombre en ingles por la "ñ"
  * @return
  */
 int getCurrentYear(){
@@ -172,6 +185,10 @@ int getCurrentYear(){
     return currentYear;
 }
 
+/**
+ * Recupera fecha actual del sistema
+ * @param date
+ */
 void recuperarFechaActual(char* date){
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);

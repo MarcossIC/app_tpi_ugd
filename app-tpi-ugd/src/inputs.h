@@ -15,6 +15,7 @@ int recuperarHoraActual();
 void recuperarFechaActual(char* date);
 int getCurrentYear();
 float escribirMontoValido(const char* prompt, float limite, float minimo);
+int escribirDireccionValida(const char* nombreDireccion);
 
 #endif //APP_TPI_UGD_INPUTS_H
 

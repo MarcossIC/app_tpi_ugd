@@ -29,3 +29,4 @@ int contarUsuariosConBeneficio();
 struct Usuario recuperarUsuario(char *DNI);
 
 #endif //APP_TPI_UGD_USER_H
+

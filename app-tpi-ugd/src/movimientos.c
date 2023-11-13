@@ -44,17 +44,8 @@ int guardarMovimientos(struct Movimiento movimiento){
 struct Movimiento crearNuevoMovimiento(int tipoDeUso){
     struct Movimiento movimiento;
     fflush(stdin);
-    bool esValido = false;
-    do{
-        movimiento.origen = escribirEnteroValido("Dime tu origen:\n1 - Posadas\n2 - Garupa\n3 - Candelaria\n:", false);
-        int opcionesValidas[] = {1,2,3,-99};
-        esValido = validarOpciones(movimiento.origen, opcionesValidas);
-    } while(!esValido);
-    do{
-        movimiento.destino = escribirEnteroValido("Dime tu destino:\n1 - Posadas\n2 - Garupa\n3 - Candelaria\n:", false);
-        int opcionesValidas[] = {1,2,3,-99};
-        esValido = validarOpciones(movimiento.destino, opcionesValidas);
-    } while(!esValido);
+    movimiento.origen = escribirDireccionValida("origen");
+    movimiento.destino = escribirDireccionValida("destino");
     movimiento.hora = recuperarHoraActual();
     recuperarFechaActual(movimiento.fecha);
 
@@ -139,12 +130,14 @@ int listarRecargaPorUsuario(const char *DNI){
         while (fread(&recarga, sizeof(struct Recargas), 1, Arch)){
             if (areStringsEqual(recarga.DNI,DNI)){
                 cont++;
+                printf("*                  Recarga                        *\n");
                 printf ("DNI: %s\n",recarga.DNI);
                 printf ("ID de Cuenta: %d\n", recarga.idCuenta);
-                printf ("Monto Cargado: %.2f\n", &recarga.monto);
+                printf ("Monto Cargado: %.2f\n", recarga.monto);
                 printf ("Boca de pago: %s\n",recuperarTipoBocaPago(recarga.bocaDePago));
                 printf ("Fecha: %s\n", recarga.fecha);
                 printf ("Hora: %d\n", recarga.hora);
+                printf("****************************************************\n");
             }
         }
         fclose(Arch);
@@ -155,40 +148,44 @@ int listarRecargaPorUsuario(const char *DNI){
     return cont;
 }
 
+/**
+ * @author Thyago
+ * @return
+ */
 float contadorPorcentajePrimerTurno (){
-    int contadorPrimTurno;
+    int contadorPrimTurno=0;
+    int cuentaMovimientos = 0;
+
     FILE* movimientoArch;
     struct Movimiento movimiento;
     struct Fecha fecha;
-    int cuentaMovimientos = 0;
-    int horaDelMovimiento, year;
+    int  year;
     float porc;
     if((movimientoArch = fopen("assets/Movimientos.dat", "rb")) != NULL) {
         while (fread(&movimiento, sizeof(struct Movimiento), 1, movimientoArch) == 1){
            fecha=desComponerFecha (movimiento.fecha);
             year=getCurrentYear();
-            if (movimiento.hora > 0 || movimiento.hora < 12 || year==fecha.anho) contadorPrimTurno++;
+            if (movimiento.hora >= 0 && movimiento.hora < 12 && year==fecha.anho) contadorPrimTurno++;
             cuentaMovimientos++;
         }
-        if (cuentaMovimientos==0){
-            imprimirMensaje("No existen movimientos",RED_COLOR);
-        }
-        if (contadorPrimTurno==0){
-            imprimirMensaje("No existen movimientos en el primer Turno", RED_COLOR);
-        }
-        porc=(contadorPrimTurno/cuentaMovimientos)*100;
+        porc= contadorPrimTurno*cuentaMovimientos/100;
         fclose(movimientoArch);
     }
     return porc;
 }
 
+/**
+ * @author Matias
+ * @param DNI
+ * @return
+ */
 int listarMovimientoPorUsuario(const char* DNI){
     FILE* movimientoArch;
     struct Movimiento movimiento;
     int cuentaMovimientos = 0;
     if((movimientoArch = fopen("assets/Movimientos.dat", "rb")) != NULL) {
         while (fread(&movimiento, sizeof(struct Movimiento), 1, movimientoArch) == 1){
-            if(areStringsEqual(DNI, movimiento.DNI)){//FALTA EL IF
+            if(areStringsEqual(DNI, movimiento.DNI)){
                 printf("*                  Movimiento                      *\n");
                 if(movimiento.esTarjeta == 1) printf("Tipo de movimiento: Tarjeta");
                 else printf("Tipo de movimiento: Billetera virtual");

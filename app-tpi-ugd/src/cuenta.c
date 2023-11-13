@@ -69,7 +69,7 @@ int guardarCuenta(struct Cuenta cuenta){
  * @param excedente
  * @return
  */
-int actualizarSaldoCuenta(int idCuenta, float saldoExtra, int *excedente){
+int actualizarSaldoCuenta(int idCuenta, float saldoExtra, float *excedente){
     struct Cuenta cuentas;
     FILE *Arch;
     int error=0;
@@ -84,7 +84,7 @@ int actualizarSaldoCuenta(int idCuenta, float saldoExtra, int *excedente){
                     *excedente = cuentas.saldo - TOPE;
                     cuentas.saldo = TOPE;
                     setColorOutput(YELLOW_COLOR);
-                    printf("El saldo excede el limite de $%d, le devolveremos $%d \n ", TOPE, *excedente);
+                    printf("El saldo excede el limite de $%d, le devolveremos $%.2f \n ", TOPE, *excedente);
                     resetColor();
                 }
                 fseek(Arch, -sizeof(struct Cuenta), SEEK_CUR);
@@ -117,7 +117,6 @@ float recuperarSaldo(const char* DNI){
     if((Arch=fopen("assets/Cuenta.dat","rb"))!=NULL){
         while (!encontroElDNI && fread(&cuentas, sizeof(struct Cuenta), 1, Arch)) {
             if (areStringsEqual(DNI, cuentas.DNI)) {
-                saldo= cuentas.saldo;
                 encontroElDNI = true;
             }
         }
@@ -144,6 +143,21 @@ struct Cuenta recuperarCuenta(const char* DNI){
             if (areStringsEqual(DNI, cuenta.DNI)) encontreLaCuenta = true;
         }
         fclose(cuentaArch);
-    } else printf ("Error al abrir el archivo");
+    } else printf ("Error al abrir el archivo.\n");
+
+    if(!encontreLaCuenta) cuenta.id = 0;
+
     return cuenta;
+}
+
+
+void definirPrecio(float* precio, int tipoCuenta, int origen, int destino, int hora){
+    if(origen == destino) *precio = 170;
+    else *precio = 200;
+
+    if(tipoCuenta == 2) {
+        if(hora >= 5 && hora < 23)  *precio = 0;
+    } else if(tipoCuenta == 3 || tipoCuenta == 4 || tipoCuenta == 5){
+        *precio -= (*precio * 55 / 100);
+    }
 }

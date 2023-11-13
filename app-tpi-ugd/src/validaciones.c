@@ -141,7 +141,15 @@ bool areIntegersEqual(int firstNumber, int secondNumber){
 bool isOlderThan(int birthdayYear, int olderAge){
     bool isValidAge = true;
     if (calcularEdad(birthdayYear) < olderAge) {
-        printf("Error, Debes de tener mas de %d años.\n", &olderAge);
+        printf("Error, Debes de tener mas de %d a\xf1os.\n", olderAge);
+        isValidAge = false;
+    }
+    return isValidAge;
+}
+bool isLessThan(int birthdayYear, int olderAge){
+    bool isValidAge = true;
+    if (calcularEdad(birthdayYear) > olderAge) {
+        printf("Error, Debes de tener menos de %d a\xf1os.\n", olderAge);
         isValidAge = false;
     }
     return isValidAge;
@@ -158,7 +166,7 @@ bool isOlderThan(int birthdayYear, int olderAge){
 bool isValidDate(int day, int month, int year) {
     bool isValidDate = true;
     if (year < 0) {
-        printf("Error, Año no puede ser 0.\n");
+        printf("Error, A\xf1o no puede ser 0.\n");
         isValidDate = false;
     }
     if (isValidDate && month < 1 || month > 12) {

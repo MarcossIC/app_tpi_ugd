@@ -1,6 +1,3 @@
-//
-// Created by usuario on 28/10/2023.
-//
 #include "user.h"
 
 /**
@@ -17,63 +14,60 @@ struct Usuario crearNuevoUsuarioValido(){
     escribirStringValido("telefono", cuenta.telefono);
     escribirFechaValida("nacimiento", cuenta.fechaNacimiento);
     bool esValido = false;
-    do{
-        cuenta.direccion = escribirEnteroValido("Dime tu direccion:\n1 - Posadas\n2 - Garupa\n3 - Candelaria\n:", false);
-        int opcionesValidas[] = {1,2,3,-99};
-        esValido = validarOpciones(cuenta.direccion, opcionesValidas);
-    } while(!esValido);
-
+    cuenta.direccion = escribirDireccionValida("direccion");
     do {
         printf("Dime cual es su tipo de cuenta.\n");
         printf("1 - Normal(Sin beneficio).\n");
         printf("2 - Beneficio estudiantil.\n");
         printf("3 - Beneficio de discapacidad.\n");
-        printf("4 - Beneficio de mayor edad.\n");
+        printf("4 - Beneficio de tercera edad.\n");
         printf("5 - Beneficio ex combatiente de malvinas.\n");
         cuenta.tipo = escribirEnteroValido(":", false);
         int opcionesValidas[] = {1, 2,3,4,5,-99};
         esValido = validarOpciones(cuenta.tipo, opcionesValidas);
+        if(esValido) esValido = validarTipoCuenta(cuenta.tipo, cuenta.direccion, cuenta.fechaNacimiento);
+
     } while(!esValido);
 
     return cuenta;
 }
-
 
 bool validarTipoCuenta(const int tipo, const int origen, const char* fechaNacimiento){
     int result = 1;
     int edad = 0;
     struct Fecha fechaNacimientoS = desComponerFecha(fechaNacimiento);
     bool cumpleConEdad = true;
-    fflush(stdin);
+
     if(tipo == 2){
-        result = escribirEnteroValido("Cuentas con los siguientes documentos para presentar:\n- constancia BEG \n- DNI Original\n- Copia DNI Original\n[1] - Si \n[0] - No", true);
-        cumpleConEdad = isOlderThan(fechaNacimientoS.anho, 6);
+        result = escribirEnteroValido("Cuentas con los siguientes documentos para presentar:\n- constancia BEG \n- DNI Original\n- Copia DNI Original\n[1] - Si \n[0] - No\n:", true);
+        edad = 6;
     }
     if(tipo == 3){
-        result = escribirEnteroValido("Cuentas con los siguientes documentos para presentar:\n- Certificado \n- DNI Original\n[1] - Si \n[0] - No", true);
-        cumpleConEdad = isOlderThan(fechaNacimientoS.anho, 7);
+        result = escribirEnteroValido("Cuentas con los siguientes documentos para presentar:\n- Certificado \n- DNI Original\n[1] - Si \n[0] - No\n:", true);
+        edad = 7;
     }
     if(tipo == 4){
-        int sexo = escribirEnteroValido("Dime tu genero biologico. \n[1] - Maculino \n[0] - Femenino", true);
+        int sexo = escribirEnteroValido("Dime tu genero biologico. \n[1] - Maculino \n[0] - Femenino\n:", true);
 
         if(origen == 1){
-            result = escribirEnteroValido("Cuentas con los siguientes documentos para presentar:\n- DNI Original \n- Copia Original\n[1] - Si \n[0] - No", true);
-            cumpleConEdad = isOlderThan(fechaNacimientoS.anho, 69);
+            result = escribirEnteroValido("Cuentas con los siguientes documentos para presentar:\n- DNI Original \n- Copia Original\n[1] - Si \n[0] - No\n:", true);
+            edad = 70;
         } else {
-
             if(sexo == 1) edad = 65;
             else edad = 60;
             char mensaje[220];
-            snprintf(mensaje, 220, "Cuentas con los siguientes documentos para presentar:\n- DNI Original \n- Copia Original\n-Carnet de la tercera edad Original\n- Edad %d\n[1] - Si \n[0] - No", edad);
+            snprintf(mensaje, 220, "Cuentas con los siguientes documentos para presentar:\n- DNI Original \n- Copia Original\n-Carnet de la tercera edad Original\n- Edad %d\n[1] - Si \n[0] - No\n:", edad);
             result = escribirEnteroValido(mensaje, true);
-            cumpleConEdad = isOlderThan(fechaNacimientoS.anho, edad);
         }
     }
     if(tipo == 5){
-        result = escribirEnteroValido("Cuentas con las siguientes documentos para presentar:\n- DNI Original\n- Copia DNI Original\n- Certificado de ex combatiente de malvina\n-Copia de certificado\n [1]- Si\n [0]- No", true);
-        cumpleConEdad = isOlderThan(fechaNacimientoS.anho, 53);
+        result = escribirEnteroValido("Cuentas con las siguientes documentos para presentar:\n- DNI Original\n- Copia DNI Original\n- Certificado de ex combatiente de malvina\n-Copia de certificado\n [1]- Si\n [0]- No\n:", true);
+        edad = 53;
     }
-
+    setColorOutput(RED_COLOR);
+    cumpleConEdad = isOlderThan(fechaNacimientoS.anho, edad);
+    if(result != 1) printf("Lo siento, no cuenta con los requisitios para este beneficio.\n");
+    resetColor();
     return result == 1 && cumpleConEdad;
 }
 
@@ -96,7 +90,7 @@ int guardarUsuario(struct Usuario usuario) {
 
 /**
  * Lista todos las cuentas guardadas en el archivo Usuarios.dat
- *
+ *<
  * @author Marcos
  * @return El numero de cuentas que listo
  */
@@ -109,8 +103,8 @@ int listarTodosLosUsuariosRegistrados(){
             printf("*                     Usuario                      *\n");
             printf("%s %s, %s\n", usuario.nombre, usuario.apellido, usuario.DNI);
             printf("Fecha nacimiento: %s\n",usuario.fechaNacimiento);
-            printf("Direccion: %s\n", usuario.direccion);
-            printf("Telefono: %s\n",usuario.telefono);
+            printf("Direccion: %s\n", recuperarDireccion( usuario.direccion ));
+            printf("Telefono: %s\n", usuario.telefono);
             printf("Tipo: %s\n", recuperarTipoCuenta( usuario.tipo) );
             printf("****************************************************\n");
             cuentaDeUsuariosRegistrados++;
@@ -175,7 +169,13 @@ int contarUsuariosConBeneficio(){
     return cuentaUsuarios;
 }
 
-
+/**
+ * @author Matias
+ * @param nombre
+ * @param apellido
+ * @param DNI
+ * @return
+ */
 int buscarDNIporNombre(const char* nombre, const char* apellido, char* DNI){//
     struct Usuario usuario;
     FILE* usuarioArch;

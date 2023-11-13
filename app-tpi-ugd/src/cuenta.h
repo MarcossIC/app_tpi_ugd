@@ -16,9 +16,11 @@ struct Cuenta{
 
 int obtenerUltimoIdDeCuenta();
 int guardarCuenta(struct Cuenta cuenta);
-int actualizarSaldoCuenta(int idCuenta, float saldoExtra, int *excedente);
+int actualizarSaldoCuenta(int idCuenta, float saldoExtra, float *excedente);
 int buscarIdCuenta(char* DNI);
 struct Cuenta recuperarCuenta(const char* DNI);
 float recuperarSaldo(const char* DNI);
+void definirPrecio(float* precio, int tipoCuenta, int origen, int destino, int hora);
 
 #endif //APP_TPI_UGD_CUENTA_H
+

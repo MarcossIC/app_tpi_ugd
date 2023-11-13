@@ -1,0 +1,8 @@
+
+€c:S5276"fimplicit conversion from 'unsigned long long' to 'long' changes value from 18446744073709551592 to -24(…Ëëô8¿ÃÅ¡¼1
+…c:S5276Z"fimplicit conversion from 'unsigned long long' to 'long' changes value from 18446744073709551592 to -24(”â…«úÿÿÿÿ8ÞÃÅ¡¼1
+dc:S876"KRemove the unary minus operator or change the expression's underlying type.(…Ëëô8ÜÄÅ¡¼1
+sc:S995"ZMake the type of this parameter a pointer-to-const. The current type of "DNI" is "char *".(˜ƒ¸À8ßÄÅ¡¼1
+ec:S134S"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ðª›^8¶ç…Ï¼1
+ic:S876Z"KRemove the unary minus operator or change the expression's underlying type.(”â…«úÿÿÿÿ8þÄÅ¡¼1
+Mc:S2095)"3Opened stream never closed. Potential resource leak(ì”Å©8§ÈÅ¡¼1

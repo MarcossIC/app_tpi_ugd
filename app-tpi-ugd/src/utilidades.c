@@ -1,4 +1,3 @@
-
 #include "utilidades.h"
 
 /**
@@ -38,10 +37,10 @@ const char* recuperarTipoBocaPago(const int tipo){
 
 const char* recuperarTipoCuenta(const int tipo){
     char* buffer = NULL;
-    if(tipo == 1) buffer= strdup("Normal");
+    if(tipo == 1) buffer= strdup("Normal.");
     if(tipo == 2) buffer= strdup( "Boleto Estudiantil.");
     if(tipo == 3) buffer= strdup("Beneficio Discapacidad.");
-    if(tipo == 4) buffer= strdup("Beneficio Anciano.");
+    if(tipo == 4) buffer= strdup("Beneficio tercera edad.");
     if(tipo == 5) buffer= strdup("Beneficio por ex combatiente de malvinas.");
     return buffer;
 }
@@ -49,11 +48,16 @@ const char* recuperarTipoCuenta(const int tipo){
 const char* recuperarDireccion(const int tipo){
     char* buffer = NULL;
     if(tipo == 1) buffer= strdup("Posadas.");
-    if(tipo == 2) buffer= strdup( "Calendario.");
-    if(tipo == 3) buffer= strdup("Beneficio Discapacidad.");
+    if(tipo == 2) buffer= strdup("Garupa.");
+    if(tipo == 3) buffer= strdup( "Candelaria.");
     return buffer;
 }
 
+/**
+ * Cambia el color de las letras en la consola
+ *
+ * @param foregroundColor Nuevo color para las letras
+ */
 void setColorOutput(int foregroundColor){
     if (isWindowsOS()) {
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -62,7 +66,9 @@ void setColorOutput(int foregroundColor){
         printf("\033[%d;%dm", foregroundColor);
     }
 }
-
+/**
+ * Vuelve a poner el color de letras por defecto
+ */
 void resetColor() {
     if (isWindowsOS()) {
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -72,6 +78,13 @@ void resetColor() {
     }
 }
 
+/**
+ * Imprime un mensaje en la consola, con un color para el texto
+ * y el formoto con los asteriscos
+ *
+ * @param mensaje Mensaje a imprimir
+ * @param color Color de texto
+ */
 void imprimirMensaje(const char* mensaje, int color) {
     setColorOutput(color);
     printf("****************************************************\n");
@@ -80,12 +93,26 @@ void imprimirMensaje(const char* mensaje, int color) {
     resetColor();
 }
 
+/**
+ * Compara dos fechas en string en formato "yyyy-mm-dd"
+ *
+ * @param fechaUno Primer fecha
+ * @param fechaDos Segunda fecha
+ * @return Valor entero de la comparacion lexicografica de las fechas
+ */
 int compararFechas(const char *fechaUno, const char *fechaDos) {
     return strcmp(fechaUno, fechaDos);
 }
 
+/**
+ * Decompone una fecha en formato string a un struct Fecha
+ *
+ * @param fecha Fecha en formato "yyyy-mm-dd"
+ * @return struct Fecha
+ */
 struct Fecha desComponerFecha(const char* fecha){
     struct Fecha fechaS = {0,0,0};
+    //Pasa los valores del string a las variables de valor entero
     sscanf(fecha, "%d-%d-%d", &fechaS.anho, &fechaS.mes, &fechaS.dia);
     return fechaS;
 }

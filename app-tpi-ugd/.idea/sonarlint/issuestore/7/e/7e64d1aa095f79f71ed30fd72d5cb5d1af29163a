@@ -1,0 +1,6 @@
+
+rc:S5276@"Simplicit conversion loses integer precision: 'int' to 'WORD' (aka 'unsigned short')(°„¡¦ùÿÿÿÿ8²•¿£¼1
+qc:S1912"WReplace this call to the non reentrant function "localtime" by a call to "localtime_r".(¶è ¬8ŞÔ‰Ÿ¼1
+vc:S5350"\Make the type of this variable a pointer-to-const. The current type of "buffer" is "char *".(á–º8èÔ‰Ÿ¼1
+vc:S5350'"\Make the type of this variable a pointer-to-const. The current type of "buffer" is "char *".(á–º8æ¿Ÿ¼1
+vc:S53501"\Make the type of this variable a pointer-to-const. The current type of "buffer" is "char *".(á–º8Ä¦¾£¼1
