@@ -146,6 +146,7 @@ int vistaCargaSaldo(){
         printf("Para realizar la recarga verifique su cuenta ingresando los siguientes datos: \n");
         struct Recargas recarga;
         fflush(stdin);
+
         escribirStringValido("DNI", recarga.DNI);
         recarga.idCuenta = buscarIdCuenta(recarga.DNI);
         if(recarga.idCuenta != 0){
@@ -163,12 +164,18 @@ int vistaCargaSaldo(){
             recarga.hora = recuperarHoraActual();
             //Actualizar Saldo de cuenta
             float excedente;
-            actualizarSaldoCuenta(recarga.idCuenta,recarga.monto, &excedente);
-            //Guardar recarga
-            guardarRecarga(recarga);
+            int actualizo = actualizarSaldoCuenta(recarga.idCuenta,recarga.monto, &excedente);
+            if(actualizo == 0){
+                imprimirMensaje("SE CARGO HA CARGADO EL SALDO", GREEN_COLOR);
+                //Guardar recarga
+                guardarRecarga(recarga);
+            } else {
+                imprimirMensaje("No se ha podido actualizar el saldo.", RED_COLOR);
+            }
+
             //Generar comprobante
             char nombreComprobante[40];
-            snprintf(nombreComprobante, 40, "comprobante%d %s-%d-%s.txt", recarga.idCuenta, recarga.fecha, recarga.hora, recarga.DNI);
+            snprintf(nombreComprobante, 40, "comprobante%d%d%s-%s.txt", recarga.idCuenta, recarga.hora, recarga.DNI,recarga.fecha);
             generarComrpobante(nombreComprobante, recarga);
     } else imprimirMensaje("LO SIENTO, el dni ingresado no se encuentra registrado.", YELLOW_COLOR);
     return -2;

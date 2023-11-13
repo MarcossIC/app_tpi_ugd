@@ -3,6 +3,7 @@
 /**
  * Arma el struct de Usuario con todos los datos
  *
+ * @author Marcos
  * @return Retorna el struct de account
  */
 struct Usuario crearNuevoUsuarioValido(){
@@ -32,6 +33,13 @@ struct Usuario crearNuevoUsuarioValido(){
     return cuenta;
 }
 
+/**
+ * @author Marcos y Matias
+ * @param tipo
+ * @param origen
+ * @param fechaNacimiento
+ * @return
+ */
 bool validarTipoCuenta(const int tipo, const int origen, const char* fechaNacimiento){
     int result = 1;
     int edad = 0;

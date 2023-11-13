@@ -2,18 +2,20 @@
 #include "utilidades.h"
 
 /**
- *<
+ *
  * @author Thyago
  * @return
  */
 int obtenerUltimoIdDeCuenta(){
     //Se busca la ultima id
     FILE *CuentaArch;
-    int lastId = 1; // Variable que va a tener la ultima id
-    if((CuentaArch=fopen("assets/Cuenta.dat","ab"))!=NULL){
+    int lastId = 0; // Variable que va a tener la ultima id
+    struct Cuenta Cuentas;
+    if((CuentaArch=fopen("assets/Cuenta.dat","a+b"))!=NULL){
         fseek(CuentaArch, -sizeof(struct Cuenta), SEEK_END);
-        struct Cuenta Cuentas;
-        if(fread(&Cuentas, sizeof(struct Cuenta),1,CuentaArch)) lastId=Cuentas.id;
+        if(fread(&Cuentas, sizeof(struct Cuenta),1,CuentaArch) == 1)
+            lastId = Cuentas.id;
+
         fclose(CuentaArch);
     }
     return lastId;
@@ -32,6 +34,7 @@ int buscarIdCuenta(char* DNI) {
     bool encontroElId = false;
     if ((Cuenta = fopen("assets/Cuenta.dat", "rb")) != NULL) {
         while (!encontroElId && fread(&cuentas, sizeof(struct Cuenta), 1, Cuenta)) {
+            printf("\n\n DNI: %s \b id cuenta: %d \n\n", cuentas.DNI, cuentas.id);
             if (areStringsEqual(DNI, cuentas.DNI)) {
                 id = cuentas.id;
                 encontroElId = true;
@@ -80,7 +83,7 @@ int actualizarSaldoCuenta(int idCuenta, float saldoExtra, float *excedente){
 
             if(cuentas.id==idCuenta){
                 cuentas.saldo+=saldoExtra;//
-                if(cuentas.saldo > TOPE){
+                if(cuentas.saldo > TOPE){//
                     *excedente = cuentas.saldo - TOPE;
                     cuentas.saldo = TOPE;
                     setColorOutput(YELLOW_COLOR);
@@ -118,6 +121,7 @@ float recuperarSaldo(const char* DNI){
         while (!encontroElDNI && fread(&cuentas, sizeof(struct Cuenta), 1, Arch)) {
             if (areStringsEqual(DNI, cuentas.DNI)) {
                 encontroElDNI = true;
+                saldo = cuentas.saldo;
             }
         }
         fclose(Arch);
@@ -150,7 +154,15 @@ struct Cuenta recuperarCuenta(const char* DNI){
     return cuenta;
 }
 
-
+/**
+ * @author Marcos
+ *
+ * @param precio
+ * @param tipoCuenta
+ * @param origen
+ * @param destino
+ * @param hora
+ */
 void definirPrecio(float* precio, int tipoCuenta, int origen, int destino, int hora){
     if(origen == destino) *precio = 170;
     else *precio = 200;
