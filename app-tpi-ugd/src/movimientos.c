@@ -68,8 +68,8 @@ int listarMovimientosEntreFechas(const char* fechaInicio, const char* fechaFin){
         while (fread(&movimiento, sizeof(struct Movimiento), 1, movimientoArch) == 1){
             if( dateIsBetween(movimiento.fecha, fechaInicio, fechaFin) ){
                 printf("*                  Movimiento                      *\n");
-                if(movimiento.esTarjeta == 1) printf("Tipo de movimiento: Tarjeta");
-                else printf("Tipo de movimiento: Billetera virtual");
+                if(movimiento.esTarjeta == 1) printf("Tipo de movimiento: Tarjeta.\n");
+                else printf("Tipo de movimiento: Billetera virtual.\n");
                 printf("DNI: %s\n", movimiento.DNI);
                 printf("Telefono: %s\n", movimiento.telefono);
                 printf("Nro de cuenta: %d\n", movimiento.idCuenta);
@@ -152,25 +152,24 @@ int listarRecargaPorUsuario(const char *DNI){
  * @author Thyago
  * @return
  */
-float contadorPorcentajePrimerTurno (){
-    int contadorPrimTurno=0;
-    int cuentaMovimientos = 0;
-
+float contadorPorcentajePrimerTurno(){
     FILE* movimientoArch;
     struct Movimiento movimiento;
-    struct Fecha fecha;
-    int  year;
-    float porc;
+    int contadorPrimTurno = 0;
+    int cuentaMovimientos = 0;
+    int  anho = getCurrentYear();
+    float porc = 0;
+
     if((movimientoArch = fopen("assets/Movimientos.dat", "rb")) != NULL) {
         while (fread(&movimiento, sizeof(struct Movimiento), 1, movimientoArch) == 1){
-           fecha=desComponerFecha (movimiento.fecha);
-            year=getCurrentYear();
-            if (movimiento.hora >= 0 && movimiento.hora < 12 && year==fecha.anho) contadorPrimTurno++;
+            if (movimiento.hora >= 0 && movimiento.hora < 12 && desComponerFecha(movimiento.fecha).anho == anho) contadorPrimTurno++;
+
             cuentaMovimientos++;
         }
-        porc= contadorPrimTurno*cuentaMovimientos/100;
+        porc = contadorPrimTurno * 100 / cuentaMovimientos;
         fclose(movimientoArch);
     }
+
     return porc;
 }
 
@@ -204,5 +203,47 @@ int listarMovimientoPorUsuario(const char* DNI){
         fclose(movimientoArch);
     }
     return cuentaMovimientos;
+}
+
+
+int buscarUnidadConMasViajes(const int mes){
+    FILE* movimientoArch;
+    FILE* movimientoCopyArch;
+    struct Movimiento movimientoRef;
+    struct Movimiento movimiento;
+    struct Fecha fecha;
+    int attpCount = 0;
+    int maxCont = 0;
+    int attpId = 0;
+    int maxId = 0;
+    duplicarArchivo("assets/Movimientos.dat", "assets/CopyMovimientos.dat");
+
+    if((movimientoArch = fopen("assets/Movimientos.dat", "rb")) != NULL && (movimientoCopyArch = fopen("assets/CopyMovimientos.dat", "rb")) != NULL) {
+        while (fread(&movimientoRef, sizeof(struct Movimiento), 1, movimientoArch) == 1) {
+            if(desComponerFecha(movimientoRef.fecha).mes == mes) {
+                rewind(movimientoCopyArch);
+                while (fread(&movimiento, sizeof(struct Movimiento), 1, movimientoCopyArch) == 1) {
+                    if(movimientoRef.idUnidad == movimiento.idUnidad && desComponerFecha(movimiento.fecha).mes == mes){
+
+                        attpId = movimiento.idUnidad;
+                        attpCount++;
+                    }
+                }
+
+                if(attpCount > maxCont) {
+                    maxCont = attpCount;
+                    maxId = attpId;
+                }
+                maxCont = 0;
+            }
+        }
+
+        fclose(movimientoCopyArch);
+        fclose(movimientoArch);
+    } else imprimirMensaje("No se pudo abrir el archivo.", RED_COLOR);
+
+    borrarArchivo("assets/CopyMovimientos.dat");
+
+    return maxId;
 }
 

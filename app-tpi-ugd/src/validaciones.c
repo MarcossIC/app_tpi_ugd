@@ -169,6 +169,7 @@ bool isValidDate(int day, int month, int year) {
         printf("Error, A\xf1o no puede ser 0.\n");
         isValidDate = false;
     }
+
     if (isValidDate && month < 1 || month > 12) {
         printf("Error, Mes no puede ser menor a 1 o mayor 12\n");
         isValidDate = false;

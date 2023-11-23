@@ -1,6 +1,6 @@
 
-@c:S1481Ï" unused variable 'opcionEsValida'(ŠÑ›œÿÿÿÿÿ8ª±ÐÔ¼1
-gc:S134Ç"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(óÈÁ„8„³ÐÔ¼1
-gc:S134Ó"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(…ý€“8†³ÐÔ¼1
-Pc:S1659ø"0Define each identifier in a dedicated statement.(§¯Êêüÿÿÿÿ8‡³ÐÔ¼1
-Pc:S1659Ù"0Define each identifier in a dedicated statement.(Û¯ Éþÿÿÿÿ8‰³ÐÔ¼1
+@c:S1481Ü" unused variable 'opcionEsValida'(ŠÑ›œÿÿÿÿÿ8âºÀÌ¿1
+gc:S134Ñ"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(óÈÁ„8©¼ÀÌ¿1
+gc:S134ß"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(…ý€“8©¼ÀÌ¿1
+Pc:S1659„"0Define each identifier in a dedicated statement.(§¯Êêüÿÿÿÿ8º¼ÀÌ¿1
+Pc:S1659å"0Define each identifier in a dedicated statement.(Û¯ Éþÿÿÿÿ8Ì¼ÀÌ¿1

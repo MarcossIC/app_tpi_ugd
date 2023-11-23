@@ -25,12 +25,15 @@ int vistaListarUnidades();
 int vistaListarChoferes();
 int vistaPorcentajePrimerTurno();
 int vistaMovimientosPorUsuario();
+int vistaChoferConMasPasajeros();
 
 int main() {
+    //Para evitar que se rompan las "ñ" en consola
     setlocale(LC_ALL, "");
     ejecutarApp();
     return 0;
 }
+
 
 void ejecutarApp(){
     int vista = -1;
@@ -67,6 +70,8 @@ void ejecutarApp(){
             vista= vistaPorcentajePrimerTurno();
         } else if (vista==15){
             vista = vistaMovimientosPorUsuario();
+        } else if(vista == 16){
+            vista = vistaChoferConMasPasajeros();
         }
         else {
             vista = vistaEspera();
@@ -98,11 +103,13 @@ int vistaInicio(){
         printf("*  13 - Listar Unidad                               *\n");
         printf("*  14 - Porcentaje de Movimientos el Primer turno   *\n");
         printf("*  15 - Listar Movimientos de un Usuario            *\n");
+        printf("*  16 - Ver chofer con mas pasajeros en un mes      *\n");
         printf("*  0 - Salir                                        *\n");
 
         nuevaVista = escribirEnteroValido("*:", false);
-        int opcionesValidas[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11, 12 , 13  ,  14 , 15 , 0 , -99};
+        int opcionesValidas[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11, 12 , 13  ,  14 , 15 , 16, 0 , -99};
         opcionEsValida = numberIsFoundIn(nuevaVista, opcionesValidas);
+
         if(!opcionEsValida) imprimirMensaje("LO SIENTO, vista NO ENCONTRADA", RED_COLOR);
     } while(!opcionEsValida);
 
@@ -111,7 +118,8 @@ int vistaInicio(){
 
 int vistaListarUsuarios(){
     imprimirMensaje("LISTA DE CUENTAS ", AQUAMARINE_COLOR);
-    int conteo = listarTodosLosUsuariosRegistrados();
+    int conteo = 0;
+    conteo = listarTodosLosUsuariosRegistrados();
     if(conteo == 0) imprimirMensaje("No hay usuarios registrados", YELLOW_COLOR);
     return -2;
 }
@@ -169,14 +177,14 @@ int vistaCargaSaldo(){
                 imprimirMensaje("SE CARGO HA CARGADO EL SALDO", GREEN_COLOR);
                 //Guardar recarga
                 guardarRecarga(recarga);
+
+                //Generar comprobante
+                char nombreComprobante[40];
+                snprintf(nombreComprobante, 40, "comprobante%d%d%s-%s.txt", recarga.idCuenta, recarga.hora, recarga.DNI,recarga.fecha);
+                generarComrpobante(nombreComprobante, recarga);
             } else {
                 imprimirMensaje("No se ha podido actualizar el saldo.", RED_COLOR);
             }
-
-            //Generar comprobante
-            char nombreComprobante[40];
-            snprintf(nombreComprobante, 40, "comprobante%d%d%s-%s.txt", recarga.idCuenta, recarga.hora, recarga.DNI,recarga.fecha);
-            generarComrpobante(nombreComprobante, recarga);
     } else imprimirMensaje("LO SIENTO, el dni ingresado no se encuentra registrado.", YELLOW_COLOR);
     return -2;
 }
@@ -189,21 +197,25 @@ int vistaUsarSaldo(int tipoDeUso){
     escribirStringValido("DNI", DNI);
     struct Cuenta cuenta = recuperarCuenta(DNI);
 
-    if(cuenta.id != 0){
-        if(cuenta.saldo > -200){
-            struct Movimiento movimiento = crearNuevoMovimiento(tipoDeUso);
+
+    if(cuenta.id != 0) {
+        if(cuenta.saldo > -200) {
+            struct Movimiento movimiento;
             bool unidadExiste = true;
             do{
                 movimiento.idUnidad = escribirEnteroValido("Dime en que unidad viajas:", false);
                 unidadExiste = unidadExistePorId(movimiento.idUnidad);
+
                 if(!unidadExiste) imprimirMensaje("Esta unidad no esta registrada.", YELLOW_COLOR);
             } while(!unidadExiste);
+            movimiento = crearNuevoMovimiento(tipoDeUso);
 
             struct Usuario  usuario = recuperarUsuario(DNI);
             strcpy(movimiento.DNI, DNI);
             movimiento.idCuenta = cuenta.id;
             strcpy(movimiento.telefono, usuario.telefono);
             definirPrecio(&movimiento.montoUtilizado, usuario.tipo, movimiento.origen, movimiento.destino, movimiento.hora);
+            movimiento.hora = 6;
             int error = guardarMovimientos(movimiento);
 
             if (error == 0) {
@@ -322,10 +334,11 @@ int vistaListarUnidades(){
 }
 
 int vistaPorcentajePrimerTurno() {
+    float porcentaje = 0;
     imprimirMensaje("PORCENTAJE USUARIOS EN EL PRIMER TURNO", AQUAMARINE_COLOR);
     char mensaje[50];
-    float porcentaje = contadorPorcentajePrimerTurno();
-    snprintf(mensaje, 50, "El porcentaje es %c%.2f",37 , porcentaje);
+    porcentaje = contadorPorcentajePrimerTurno();
+    snprintf(mensaje, 50, "El porcentaje es %c %.2f", 37, porcentaje);
     imprimirMensaje(mensaje, DARK_GREEN_COLOR);
     return -2;
 }
@@ -334,9 +347,8 @@ int vistaEspera(){
     int nuevaVista = 0;
     bool opcionEsValida = true;
     printf("****************************************************\n");
-    printf("*************    Que desea realizar?   *************\n");
-    printf("*  1 - Continuar                \n");
-    printf("*  0 - Salir                    \n");
+    printf("*           Usuario Hasta aca llegaste.            *\n");
+    printf("*   Por Si [1] o por No [0]. Deseas continuar?     *\n");
     nuevaVista = escribirEnteroValido("*:", true);
     return nuevaVista*-1;
 }
@@ -360,5 +372,30 @@ int vistaMovimientosPorUsuario(){
      else imprimirMensaje("No existe el usuario", AQUAMARINE_COLOR);
 
      return -2;
+}
+
+int vistaChoferConMasPasajeros() {
+    int mes;
+    int idUnidad = 0;
+    bool mesEsValido = false;
+    imprimirMensaje("CHOFER CON MAS VIAJES", AQUAMARINE_COLOR);
+    printf("Ingrese el mes (1 - 12)\n");
+    do{
+        mes = escribirEnteroValido("*:", false);
+        int opcionesValidas[] = {1,2,3,4,5,6,7,8,9,10,11,12, -99};
+        mesEsValido = numberIsFoundIn(mes, opcionesValidas);
+        if(!mesEsValido) imprimirMensaje("Ese mes no existe,", RED_COLOR);
+    } while(!mesEsValido);
+
+    idUnidad = buscarUnidadConMasViajes(mes);
+    if(idUnidad != 0){
+        char dniChofer[10];
+        buscarDNIChoferPorUnidad(idUnidad, dniChofer);
+        mostrarChofer(dniChofer);
+    } else {
+        imprimirMensaje("No se han encontrado viajes en este mes", YELLOW_COLOR);
+    }
+
+    return -2;
 }
 

@@ -1,7 +1,13 @@
 
 mc:S5276h"Nimplicit conversion turns floating-point number into integer: 'float' to 'int'(Û©‘áÿÿÿÿÿ8 —Ì¡¼1
-\c:S5276«"<implicit conversion from 'int' to 'float' may lose precision(ÓÖûÌýÿÿÿÿ8¡—Ì¡¼1
-kc:S134G"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ú®«¸üÿÿÿÿ8¯˜Ì¡¼1
+Vc:S5276©"<implicit conversion from 'int' to 'float' may lose precision(§ò8¡—Ì¡¼1
+2c:S1481Ö"unused variable 'fecha'(ñõú8Íé€Ë¿1
+fc:S134G"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(È”ùž8Î˜Ì¡¼1
 Jc:S1659g"0Define each identifier in a dedicated statement.(¿ÀÊ8¾˜Ì¡¼1
-lc:S134¾"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ú®«¸üÿÿÿÿ8Î˜Ì¡¼1
-Gc:S836®"-Undefined or garbage value returned to caller(¿ÀÝï8ú›Ì¡¼1
+lc:S134½"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ú®«¸üÿÿÿÿ8ýÞÝÊ¿1
+lc:S134á"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ãúÜ¼ùÿÿÿÿ8ÉìàÊ¿1
+lc:S134é"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(ÃÙŽ®øÿÿÿÿ8òÓàÌ¿1
+gc:S912Ý"HRemove any side effects from right hand operands of logical && operator.(¥Ù‘Þúÿÿÿÿ8ÞÝÊ¿1
+*c:S3518©"Division by zero(§ò8³ÛõÌ¿1
+Bc:S1854ê"'Value stored to 'maxCont' is never read(ÝÌ©ø8Žõ€Ë¿1
+Nc:S2095ó"3Opened stream never closed. Potential resource leak(¤ ›ü8õ€Ë¿1

@@ -1,6 +1,7 @@
 
-rc:S5276@"Simplicit conversion loses integer precision: 'int' to 'WORD' (aka 'unsigned short')(°„¡¦ùÿÿÿÿ8²•¿£¼1
+rc:S5276P"Simplicit conversion loses integer precision: 'int' to 'WORD' (aka 'unsigned short')(°„¡¦ùÿÿÿÿ8Õ³ƒÊ¿1
 qc:S1912"WReplace this call to the non reentrant function "localtime" by a call to "localtime_r".(¶è ¬8ŞÔ‰Ÿ¼1
-vc:S5350"\Make the type of this variable a pointer-to-const. The current type of "buffer" is "char *".(á–º8èÔ‰Ÿ¼1
-vc:S5350'"\Make the type of this variable a pointer-to-const. The current type of "buffer" is "char *".(á–º8æ¿Ÿ¼1
-vc:S53501"\Make the type of this variable a pointer-to-const. The current type of "buffer" is "char *".(á–º8Ä¦¾£¼1
+vc:S5350!"\Make the type of this variable a pointer-to-const. The current type of "buffer" is "char *".(á–º8«½‚Ê¿1
+vc:S53502"\Make the type of this variable a pointer-to-const. The current type of "buffer" is "char *".(á–º8‡µƒÊ¿1
+vc:S5350A"\Make the type of this variable a pointer-to-const. The current type of "buffer" is "char *".(á–º8‡‰„Ê¿1
+uc:S108¨"\Fill this compound statement, remove it, or add a nested comment explaining why it is empty.(ªœq8ŒŸÊ¿1

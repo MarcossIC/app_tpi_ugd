@@ -28,25 +28,52 @@ struct Chofer crearNuevoChofer(){
  */
 struct Unidad crearNuevaUnidad(){
     struct Unidad unidad;
+    struct Chofer chofer;
     bool choferExiste = false;
+    bool choferDisp = false;
     fflush (stdin);
+    printf("Primero ingrese datos del chofer.\n");
     do{
-        printf("Primero necesito datos del chofer.\n");
         escribirStringValido("DNI",unidad.dniChofer);
         choferExiste = choferExistePorDNI(unidad.dniChofer);
-        if (!choferExiste) imprimirMensaje("El DNI del chofer no existe", YELLOW_COLOR);
-    } while(!choferExiste);
+
+        if (!choferExiste) {
+            imprimirMensaje("El DNI del chofer no esta registrado", YELLOW_COLOR);
+        } else {
+            choferDisp = choferDisponible(unidad.dniChofer);
+            if (!choferExiste) imprimirMensaje("El chofer ya se encuentra trabajando en otro turno.", YELLOW_COLOR);
+        }
+        //Validar que el chofer este disponible
+
+
+    } while(!choferExiste || !choferDisp);
+
     unidad.idUnidad=buscarUltimoIdUnidad()+1;
     escribirStringValido("Marca",unidad.marca);
     escribirStringValido("Modelo",unidad.modelo);
     unidad.cantidadDeAsientos = escribirEnteroValido("Ingresar la cantidad de asientos que dispone la Unidad: ", false);
     unidad.kilometraje = escribirEnteroValido("Ingresar el kilometraje la Unidad: ", false);
     escribirFechaValida("alta: ", unidad.fechaAlta);
+
     unidad.turno = escribirEnteroValido("Ingresar el turno de la Unidad \n[1] Tarde \n[0] Ma\xf1\x61na\n: ", true);
+
     unidad.aptoDiscapacitados= escribirEnteroValido ("Es apto para discapacitados \n[1] SI \n[0] NO\n:", true);
     return unidad;
 }
 
+struct Chofer buscarChoferPorDNI(const char* DNI){
+    struct Chofer chofferAtmp;
+    bool choferExiste = false;
+    FILE* choferArch;
+    if( (choferArch = fopen("assets/Chofer.dat", "rb")) != NULL){
+        while(!choferExiste && fread(&chofferAtmp, sizeof(struct Chofer), 1, choferArch)){
+            if(areStringsEqual(DNI, chofferAtmp.DNI))
+                choferExiste = true;
+        }
+        fclose(choferArch);
+    }
+    return chofferAtmp;
+}
 /**
  * @author Thyago
  * @param DNI
@@ -149,7 +176,7 @@ int listarChoferes(){
             printf("Telefono: %s \n", chofer.telefono);
             printf("Email: %s \n", chofer.email);
             printf("Direccion: %s \n", recuperarDireccion( chofer.direccion ));
-            printf("*******************************************************************************\n\n");
+            printf("*******************************************************************************\n");
             cuentaDeUsuariosRegistrados++;
         }
         fclose(Arch);
@@ -193,5 +220,57 @@ int listarUnidades(){
 }
 
 
+bool choferDisponible (const char *DNI){
+    bool disponible = true;
+    struct Unidad unidad;
+    FILE *unidadesArch;
+    if((unidadesArch = fopen("assets/Unidades.dat", "rb")) != NULL) {
+        while (fread(&unidad, sizeof(struct Unidad), 1, unidadesArch) == 1) {
+            if (areStringsEqual(unidad.dniChofer, DNI)) disponible = false;
+        }
 
+        fclose (unidadesArch);
+    }
+
+
+
+    return disponible;
+
+}
+
+void buscarDNIChoferPorUnidad(const int idUnidad, char* DNI){
+    FILE* unidadArch;
+    struct Unidad unidad;
+    bool encontroUnidad = false;
+    if((unidadArch = fopen("assets/Unidades.dat", "rb")) != NULL) {
+        while ( !encontroUnidad && (fread(&unidad, sizeof(struct Unidad), 1, unidadArch) == 1)) {
+            if (unidad.idUnidad == idUnidad) {
+                strcpy(DNI, unidad.dniChofer);
+                encontroUnidad = true;
+            }
+        }
+        fclose (unidadArch);
+    }
+}
+
+void mostrarChofer(const char* DNI){
+    FILE* choferArch;
+    struct Chofer chofer;
+    bool encontroChofer = false;
+    if( (choferArch = fopen("assets/Chofer.dat", "rb")) != NULL){
+        while (!encontroChofer && fread(&chofer, sizeof(struct Chofer), 1, choferArch) == 1) {
+            if(areStringsEqual(chofer.DNI, DNI)){
+                printf("*                               CHOFER                                        *\n");
+                printf("%s %s, %s\n", chofer.nombre, chofer.apellido, chofer.DNI);
+                printf("Fecha nacimiento: %s \n", chofer.fechaNacimiento);
+                printf("Telefono: %s \n", chofer.telefono);
+                printf("Email: %s \n", chofer.email);
+                printf("Direccion: %s \n", recuperarDireccion( chofer.direccion ));
+                printf("*******************************************************************************\n");
+                encontroChofer = true;
+            }
+        }
+    }
+
+}
 

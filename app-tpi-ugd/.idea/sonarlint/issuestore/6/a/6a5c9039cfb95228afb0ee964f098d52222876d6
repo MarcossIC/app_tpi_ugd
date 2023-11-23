@@ -1,3 +1,5 @@
 
-€c:S5276N"fimplicit conversion from 'unsigned long long' to 'long' changes value from 18446744073709551532 to -84(ı“İ8óí‹«¼1
-dc:S876N"KRemove the unary minus operator or change the expression's underlying type.(ı“İ8ÿï‹«¼1
+7c:S1481"unused variable 'chofer'(î‘ô™øÿÿÿÿ8–ùâÿ¾1
+€c:S5276i"fimplicit conversion from 'unsigned long long' to 'long' changes value from 18446744073709551532 to -84(ı“İ8‘–Óÿ¾1
+dc:S876i"KRemove the unary minus operator or change the expression's underlying type.(ı“İ8ˆ˜Óÿ¾1
+Sc:S2095“"3Opened stream never closed. Potential resource leak(æÀö€øÿÿÿÿ8 ÌâË¿1

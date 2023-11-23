@@ -26,7 +26,7 @@ struct Movimiento{
     int idUnidad;
     char fecha[11];
     int hora;
-    int esTarjeta;//Diferenciar entre uso de trajeta y billetera (1, 0)
+    int esTarjeta;//  -  Diferenciar entre uso de trajeta y billetera (1, 0)
 };
 
 struct Movimiento crearNuevoMovimiento(int tipoDeUso);
@@ -37,6 +37,7 @@ void generarComrpobante(const char* name, struct Recargas recarga);
 float contadorPorcentajePrimerTurno ();
 int listarRecargaPorUsuario(const char *DNI);
 int listarMovimientoPorUsuario(const char* DNI);
+int buscarUnidadConMasViajes(const int mes);
 
 #endif //APP_TPI_UGD_MOVIMIENTOS_H
 

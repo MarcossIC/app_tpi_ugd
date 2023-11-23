@@ -36,6 +36,8 @@ const char* recuperarTipoCuenta(const int tipo);
 const char* recuperarDireccion(const int tipo);
 struct Fecha desComponerFecha(const char* fecha);
 int getCurrentYear();
+void duplicarArchivo(const char *originalPath, const char *copyPath);
+void borrarArchivo(const char* path);
 
 #endif //APP_TPI_UGD_UTILIDADES_H
 

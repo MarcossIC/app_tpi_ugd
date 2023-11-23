@@ -9,7 +9,7 @@
 int obtenerUltimoIdDeCuenta(){
     //Se busca la ultima id
     FILE *CuentaArch;
-    int lastId = 0; // Variable que va a tener la ultima id
+    int lastId = 0; // Valor por defecto 0
     struct Cuenta Cuentas;
     if((CuentaArch=fopen("assets/Cuenta.dat","a+b"))!=NULL){
         fseek(CuentaArch, -sizeof(struct Cuenta), SEEK_END);

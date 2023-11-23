@@ -37,6 +37,10 @@ bool choferExistePorDNI(const char* DNI);
 bool unidadExistePorId(const int idUnidad);
 int listarChoferes();
 int listarUnidades();
+bool choferDisponible (const char *DNI);
+
+void buscarDNIChoferPorUnidad(const int idUnidad, char* DNI);
+void mostrarChofer(const char* DNI);
 
 #endif //APP_TPI_UGD_TRANSPORTES_H
 

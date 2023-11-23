@@ -132,6 +132,8 @@ void escribirFechaValida(const char* dateName, char* date){
         year = escribirEnteroValido("A\xf1o:", false);
 
         esUnaFechaValida = isValidDate(day, month, year);
+
+
         if(esUnaFechaValida && areStringsEqual(dateName, "nacimiento")) {
             esUnaFechaValida = isOlderThan(year, 6) && isLessThan(year, 100);
         }

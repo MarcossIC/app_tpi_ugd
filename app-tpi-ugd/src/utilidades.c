@@ -1,7 +1,7 @@
 #include "utilidades.h"
 
 /**
- * Calcula la edad actual de la persona segun un año
+ * Calcula la edad actual de la persona segun su año de nacimiento
  *
  * @param year Año de nacimiento
  *
@@ -17,12 +17,18 @@ int calcularEdad(int year){
 
 /**
  * Ejecuta un comando para limpiar la consola segun el sistema operativo
+ *
  */
 void clearConsole() {
     if (isWindowsOS()) system("cls");
     else system("clear");
 }
 
+/**
+ * Pasa el tipo de boca de pago de entero a string
+ *
+ * @return tipo de boca de pago en string
+ */
 const char* recuperarTipoBocaPago(const int tipo){
     char* buffer = NULL;
     if(tipo == 1) buffer= strdup("Santander Rio");
@@ -35,6 +41,11 @@ const char* recuperarTipoBocaPago(const int tipo){
     return buffer;
 }
 
+/**
+ * Pasa el tipo de cuenta de entero a string
+ *
+ * @return tipo de cuenta  en string
+ */
 const char* recuperarTipoCuenta(const int tipo){
     char* buffer = NULL;
     if(tipo == 1) buffer= strdup("Normal.");
@@ -45,6 +56,11 @@ const char* recuperarTipoCuenta(const int tipo){
     return buffer;
 }
 
+/**
+ * Pasa la direccion de entero a string
+ *
+ * @return direccion  en string
+ */
 const char* recuperarDireccion(const int tipo){
     char* buffer = NULL;
     if(tipo == 1) buffer= strdup("Posadas.");
@@ -54,7 +70,7 @@ const char* recuperarDireccion(const int tipo){
 }
 
 /**
- * Cambia el color de las letras en la consola
+ * Cambia el color del texto en consola
  *
  * @param foregroundColor Nuevo color para las letras
  */
@@ -67,7 +83,9 @@ void setColorOutput(int foregroundColor){
     }
 }
 /**
- * Vuelve a poner el color de letras por defecto
+ * Modifica el color de texto en consola a su color por defecto (blanco con fondo negro)
+ *
+ * @author Marcos
  */
 void resetColor() {
     if (isWindowsOS()) {
@@ -82,6 +100,7 @@ void resetColor() {
  * Imprime un mensaje en la consola, con un color para el texto
  * y el formoto con los asteriscos
  *
+ * @author Marcos
  * @param mensaje Mensaje a imprimir
  * @param color Color de texto
  */
@@ -96,6 +115,7 @@ void imprimirMensaje(const char* mensaje, int color) {
 /**
  * Compara dos fechas en string en formato "yyyy-mm-dd"
  *
+ * @author Marcos
  * @param fechaUno Primer fecha
  * @param fechaDos Segunda fecha
  * @return Valor entero de la comparacion lexicografica de las fechas
@@ -107,6 +127,7 @@ int compararFechas(const char *fechaUno, const char *fechaDos) {
 /**
  * Decompone una fecha en formato string a un struct Fecha
  *
+ * @author Marcos
  * @param fecha Fecha en formato "yyyy-mm-dd"
  * @return struct Fecha
  */
@@ -115,4 +136,35 @@ struct Fecha desComponerFecha(const char* fecha){
     //Pasa los valores del string a las variables de valor entero
     sscanf(fecha, "%d-%d-%d", &fechaS.anho, &fechaS.mes, &fechaS.dia);
     return fechaS;
+}
+
+/**
+ * Esta funcion duplica toda el contenido de un archivo a otro
+ *
+ * @author Marcos
+ * @param originalPath Ruta original del archivo
+ * @param copyPath     Ruta de la copia del archivo
+ */
+void duplicarArchivo(const char *originalPath, const char *copyPath) {
+    FILE* originalFile;
+    FILE* copyFile;
+
+    if ((originalFile = fopen(originalPath, "r+b")) != NULL) {
+        if((copyFile = fopen(copyPath, "w+b")) != NULL){
+            char buffer[1024];
+            size_t bytesRead;
+
+            while ((bytesRead = fread(buffer, 1, sizeof(buffer), originalFile)) > 0)
+                fwrite(buffer, bytesRead, 1, copyFile);
+
+            fclose(copyFile);
+        }
+        fclose(originalFile);
+    }
+
+}
+
+void borrarArchivo(const char* path) {
+    if (remove(path) == 0) {
+    } else imprimirMensaje("No se ha podido eliminar el archivo", RED_COLOR);
 }
